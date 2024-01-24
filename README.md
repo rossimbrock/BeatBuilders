@@ -1,2 +1,2 @@
 # BeatBuilders
-## Authors: Ross Imbrock, 
+## Authors: Ross Imbrock, Vishal Kumar
