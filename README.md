@@ -1,2 +1,2 @@
 # BeatBuilders
-## Authors: Ross Imbrock, Vishal Kumar
+## Authors: Ross Imbrock, Vishal Kumar, Nick Ospelt, Tyler Jachimski
