@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@carbon/icons-react": "^11.34.1",
     "firebase": "^10.7.2",
     "next": "14.1.0",
     "react": "^18",
