@@ -24,10 +24,10 @@ export default function Home() {
       </div> 
       <div className="flex justify-center pb-24"> 
         <div className="w-1/2 flex justify-center "> 
-              <SongCard/>
+              <SongCard songTitle={"Song Title"} songArtist={"Artist"}/>
         </div>
         <div className = "w-1/2 flex justify-center">
-              <SongCard/>
+              <SongCard songTitle={"Song Title"} songArtist={"Artist"}/>
           </div>
         </div>
       <div className = "w-1/2 flex justify-center pr-14">
