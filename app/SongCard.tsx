@@ -12,12 +12,12 @@ export default function SongCard() {
                 <p className = "font-extralight font-lg"> Artist </p>
             </div>
             <div className="flex justify-center pt-8">
-                <div className = "pr-8"> 
+                <button className = "pr-8 hover:scale-125"> 
                     <FavoriteFilled size = {32} color = "white"/>
-                </div>
-                <div> 
+                </button>
+                <button className="hover:scale-125"> 
                     <ThumbsDownFilled size = {32} color = "white" /> 
-                </div>
+                </button>
             </div>
     
         </div>
