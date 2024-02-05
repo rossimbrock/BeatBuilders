@@ -1,6 +1,7 @@
 'use client';
 import { initFirebase } from "@/firebase/firebase";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import Link from "next/link";
 
 export default function SignUpPage() { 
 
@@ -34,15 +35,17 @@ export default function SignUpPage() {
                 </div>
             </div>
             <div className = "pb-8 flex justify-center">
-                <button className= "bg-purple-300 rounded-2xl px-32 py-2 hover:scale-105" onClick={signUp}>
-                    <p className= "font-semibold text-black">
-                            Sign Up
-                    </p>
-                </button>
+                <Link href = "/">
+                    <button className= "bg-purple-300 rounded-2xl px-32 py-2 hover:scale-105" onClick={signUp}>
+                        <p className= "font-semibold text-black">
+                                Sign Up
+                        </p>
+                    </button>
+                </Link>
             </div>
             <hr className="border-0.5 w-96 pb-8 border-gray-500"/>
             <div className="text-sm"> 
-                <p className="text-gray-500 text-center"> Don't have an account? <u className="text-white">Sign Up for Harmony</u> </p>
+                <p className="text-gray-500 text-center"> Have an account already? <Link href = "/login"><u className="text-white">Log in to Harmony</u></Link></p>
             </div>
         </div>
         

@@ -1,18 +1,31 @@
+'use client';
 import SongCard from "./SongCard";
-import { FavoriteFilled } from "@carbon/icons-react";
-import { ThumbsDownFilled } from "@carbon/icons-react";
 import SongListing from "./SongListing";
+import { getAuth, signOut } from "firebase/auth";
+import { initFirebase } from "@/firebase/firebase";
+import Link from "next/link";
 
 export default function Home() {
+  const app = initFirebase();
+  const auth = getAuth() 
+  const logOut = async() => { 
+    signOut(auth).then(() => {
+      console.log("Successful log out");
+    }).catch((error) => {
+      console.log("Error in log out");
+    });
+  }
   return (
     <section className = "px-4 py-6"> 
       <div className="flex justify-between pb-24"> 
         <button className = "bg-purple-300 rounded-md text-black font-semibold px-8 py-2">
               Logo
           </button>
-        <button className = "bg-purple-300 rounded-md text-black font-semibold px-8 py-2 hover:scale-110">
-            Log Out
-        </button>
+        <Link href = "/login">
+          <button className = "bg-purple-300 rounded-md text-black font-semibold px-8 py-2 hover:scale-110" onClick={logOut}>
+              Log Out
+          </button>
+        </Link>
       </div>
       <div className = "flex justify-center text-4xl font-bold pb-10"> 
         <p> 

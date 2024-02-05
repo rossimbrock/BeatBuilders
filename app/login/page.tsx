@@ -13,12 +13,20 @@ export default function LoginPage() {
     const logIn = async() => { 
         email = (document.getElementById('email') as HTMLInputElement).value;
         password = (document.getElementById('password') as HTMLInputElement).value;
-        const result = await signInWithEmailAndPassword(auth,email,password);
-        console.log(result.user);
+        signInWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+                <Link href = "/"/>
+                const user = userCredential.user;
+                console.log(user);
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+            });
     }
 
     return (
-        <div className = "py-10 px-24 bg-black rounded-lg flex-col items-center text-white shadow-lg"> 
+        <form className = "py-10 px-24 bg-black rounded-lg flex-col items-center text-white shadow-lg"> 
             <div className= "flex justify-center">   
                 <h1 className= "text-4xl flex justify-center pb-10 font-semibold"> Log in to Harmony </h1>
             </div>
@@ -45,7 +53,7 @@ export default function LoginPage() {
             <div className="text-sm"> 
                 <p className="text-gray-500 text-center"> Don't have an account? <Link href = "/signUp"><u className="text-white">Sign Up for Harmony</u> </Link> </p>
             </div>
-        </div>
+        </form>
         
     ); 
 }
