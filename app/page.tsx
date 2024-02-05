@@ -4,8 +4,21 @@ import SongListing from "./SongListing";
 import { getAuth, signOut } from "firebase/auth";
 import { initFirebase } from "@/firebase/firebase";
 import Link from "next/link";
+import { useState } from "react";
 
 export default function Home() {
+  const [songCardsData, setSongCardsData] = useState({
+      "cardOne": {
+        title:  "Song Title",
+        artist: "Song Artist", 
+        image: "", 
+      },
+      "cardTwo": { 
+        title: "Song Title", 
+        artist: "Song Artist", 
+        image: ""
+      }
+  })
   const app = initFirebase();
   const auth = getAuth() 
   const logOut = async() => { 
@@ -37,10 +50,10 @@ export default function Home() {
       </div> 
       <div className="flex justify-center pb-24"> 
         <div className="w-1/2 flex justify-center "> 
-              <SongCard songTitle={"Song Title"} songArtist={"Artist"}/>
+              <SongCard songTitle={songCardsData.cardOne.title} songArtist={songCardsData.cardOne.artist}/>
         </div>
         <div className = "w-1/2 flex justify-center">
-              <SongCard songTitle={"Song Title"} songArtist={"Artist"}/>
+              <SongCard songTitle={songCardsData.cardTwo.title} songArtist={songCardsData.cardTwo.artist}/>
           </div>
         </div>
       <div className = "w-1/2 flex justify-center pr-14">
