@@ -18,7 +18,9 @@ export default function Home() {
         artist: "Song Artist", 
         image: ""
       }
-  })
+  });
+  const [userQuery, setUserQuery] = useState("");
+  console.log(userQuery);
   const app = initFirebase();
   const auth = getAuth() 
   const logOut = async() => { 
@@ -46,7 +48,7 @@ export default function Home() {
         </p>
       </div>
       <div className = "flex justify-center pb-24">
-        <input type="text" id="user-query" placeholder = "Find a song based on mood, genre, artist..." className = "w-9/12 py-6 px-4 rounded-xl text-black"/>
+        <input type="text" value = {userQuery} onChange = {(e) => setUserQuery(e.target.value)} placeholder = "Find a song based on mood, genre, artist..." className = "w-9/12 py-6 px-4 rounded-xl text-black"/>
       </div> 
       <div className="flex justify-center pb-24"> 
         <div className="w-1/2 flex justify-center "> 
