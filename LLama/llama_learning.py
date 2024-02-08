@@ -50,5 +50,5 @@ def main():
     print(json)
 
 
-if __name__ == "___main__":
+if __name__ == "__main__":
     main()
