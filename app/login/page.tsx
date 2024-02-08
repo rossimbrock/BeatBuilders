@@ -32,8 +32,8 @@ export default function LoginPage() {
             </div>
             <div className="flex justify-center">
                 <div className="pb-6">
-                    <p className="pb-2"> Email or username </p>
-                    <input type="text"onChange={(e) => setFormData({...formData, email: e.target.value})} value = {formData.email} placeholder="Email or username" className = "border-white rounded-md border-2 w-80 pl-2 py-2 text-white bg-black"/>
+                    <p className="pb-2"> Email</p>
+                    <input type="text"onChange={(e) => setFormData({...formData, email: e.target.value})} value = {formData.email} placeholder="Email" className = "border-white rounded-md border-2 w-80 pl-2 py-2 text-white bg-black"/>
                 </div>
             </div>
             <div className="flex justify-center">
