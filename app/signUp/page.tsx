@@ -3,6 +3,7 @@ import { initFirebase } from "@/firebase/firebase";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import Link from "next/link";
 import { useState } from "react";
+import { signUpFormValidation } from "../authValidation";
 
 export default function SignUpPage() { 
     const [formData, setFormData] = useState ({
@@ -17,19 +18,9 @@ export default function SignUpPage() {
     const app = initFirebase();
     const auth = getAuth();
 
-    function emailAndPasswordValidation(email: string,password: string) {
-        let errors = [] 
-        if (email.length == 0) {
-            errors.push("Email is empty")
-        }
-        if (password.length < 8) {
-            errors.push("Password needs to be longer than 8 characters")
-        }
-        return errors 
-    }
 
     const signUp = async() => { 
-        const errors = emailAndPasswordValidation(formData.email, formData.password);
+        const errors = signUpFormValidation(formData.email, formData.password, formData.username);
         if (errors.length == 0) {
             createUserWithEmailAndPassword(auth, formData.email, formData.password)
             .then((userCredential) => {

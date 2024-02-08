@@ -3,18 +3,23 @@ import { initFirebase } from "@/firebase/firebase";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import Link from 'next/link';
 import { useState } from "react";
+import { logInFormValidation } from "../authValidation";
 
 export default function LoginPage() { 
     const [formData, setFormData] = useState ({
         email: "",
         password: "" 
     })
+
+    const [errorInfo, setErrorInfo]  = useState("")
     
     const app = initFirebase();
     const auth = getAuth();
 
     const logIn = async() => { 
-        signInWithEmailAndPassword(auth, formData.email, formData.password)
+        const errors = logInFormValidation(formData.email, formData.password);
+        if (errors.length == 0) { 
+            signInWithEmailAndPassword(auth, formData.email, formData.password)
             .then((userCredential) => {
                 const user = userCredential.user;
                 console.log(user);
@@ -23,6 +28,14 @@ export default function LoginPage() {
                 const errorCode = error.code;
                 const errorMessage = error.message;
             });
+        } else {
+            let completeErrorMessage = "" 
+            for (const error of errors) { 
+                completeErrorMessage += (error + "\n");
+            }
+            setErrorInfo(errorInfo);
+        }
+        
     }
 
     return (
@@ -49,6 +62,9 @@ export default function LoginPage() {
                     </p>
                 </button>
             </div>
+            <div className="text-md hidden"> 
+                <p className="text-center"> Authentication error: {errorInfo} </p>
+            </div> 
             <hr className="border-0.5 w-96 pb-8 border-gray-500"/>
             <div className="text-sm"> 
                 <p className="text-gray-500 text-center"> Don't have an account? <Link href = "/signUp"><u className="text-white">Sign Up for Harmony</u> </Link> </p>
