@@ -25,7 +25,7 @@ export function logInFormValidation(email: string, password: string) {
         errors.email = "Email is empty";
     }
     if (password.length < 8) {
-        errors.password = "Password needs to be longer than 8 characters";
+        errors.password = "Password needs to be 8+ characters";
     }
     return errors 
 }
