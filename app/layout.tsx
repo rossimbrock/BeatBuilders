@@ -15,7 +15,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="bg-black/90 scroll-smooth">{children}</body>
+      <body className="bg-black/90 scroll-overflow">{children}</body>
     </html>
   );
 }

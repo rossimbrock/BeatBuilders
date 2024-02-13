@@ -1,24 +1,40 @@
 export function signUpFormValidation(email: string, password: string, username: string) {
-    let errors = [] 
+    let errors = {
+        username: "", 
+        email: "", 
+        password: ""
+    } 
     if (email.length == 0) {
-        errors.push("Email is empty");
+        errors.email = "Email is empty";
     }
     if (password.length < 8) {
-        errors.push("Password needs to be longer than 8 characters");
+        errors.password = "Password needs to 8+ characters";
     }
     if (username.length == 0) { 
-        errors.push("Username is empty");
+        errors.username = "Username is empty";
     }
     return errors 
 }
 
 export function logInFormValidation(email: string, password: string) { 
-    let errors = [] 
+    let errors = { 
+        email: "", 
+        password: ""
+    }
     if (email.length == 0) {
-        errors.push("Email is empty");
+        errors.email = "Email is empty";
     }
     if (password.length < 8) {
-        errors.push("Password needs to be longer than 8 characters");
+        errors.password = "Password needs to be longer than 8 characters";
     }
     return errors 
+}
+
+export function checkForErrors(errors: object) { 
+    for (const [key,value] of Object.entries(errors)) { 
+        if (value.length !== 0) { 
+            return false; 
+        } 
+    }
+    return true; 
 }

@@ -3,7 +3,9 @@ import { initFirebase } from "@/firebase/firebase";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import Link from "next/link";
 import { useState } from "react";
-import { signUpFormValidation } from "../authValidation";
+import { signUpFormValidation, checkForErrors } from "../authValidation";
+import { error } from "console";
+import { InformationFilled } from "@carbon/icons-react";
 
 export default function SignUpPage() { 
     const [formData, setFormData] = useState ({
@@ -12,16 +14,21 @@ export default function SignUpPage() {
         username: ""
     })
 
-    const [errorInfo, setErrorInfo]  = useState("")
+    const [errorInfo, setErrorInfo]  = useState({
+        email: "", 
+        password: "", 
+        username: ""
+    })
     
     
     const app = initFirebase();
     const auth = getAuth();
 
 
-    const signUp = async() => { 
+    const signUp = (e: any) => { 
+        e.preventDefault();
         const errors = signUpFormValidation(formData.email, formData.password, formData.username);
-        if (errors.length == 0) {
+        if (checkForErrors(errors)) {
             createUserWithEmailAndPassword(auth, formData.email, formData.password)
             .then((userCredential) => {
                 // Signed up 
@@ -33,36 +40,44 @@ export default function SignUpPage() {
                 const errorMessage = error.message;
             });
         } else {
-            let completeErrorMessage = "" 
-            for (const error of errors) { 
-                completeErrorMessage += (error + "\n");
-            }
-            setErrorInfo(completeErrorMessage);
+            setErrorInfo(errors);
+            console.log(errorInfo);
         }
     }
-    console.log(errorInfo)
 
     return (
         <form className = "py-10 px-24 bg-black rounded-lg flex-col items-center text-white shadow-lg"> 
             <div className= "flex justify-center">   
-                <h1 className= "text-4xl flex justify-center pb-10 font-semibold"> Sign up </h1>
+                <h1 className= "text-4xl flex justify-center pb-6 font-semibold"> Sign up </h1>
             </div>
             <div className="flex justify-center">
                 <div className="pb-6">
                     <p className="pb-2"> Username </p>
                     <input type="text" onChange={(e) => setFormData({...formData, username: e.target.value})} value={formData.username} placeholder="Username" className = "border-white rounded-md border-2 w-80 pl-2 py-2 text-white bg-black"/>
+                    <div className={errorInfo.username ? "flex items-center pt-2" : "hidden"}>
+                        <InformationFilled size={16} color="rgb(216 180 254)"/>
+                        <p className="pl-2 text-purple-300">{errorInfo.username}</p>
+                    </div>
                 </div>
             </div>
             <div className="flex justify-center">
                 <div className="pb-6">
                     <p className="pb-2"> Email </p>
                     <input type="text" onChange={(e) => setFormData({...formData, email: e.target.value})} value={formData.email} placeholder="Email" className = "border-white rounded-md border-2 w-80 pl-2 py-2 text-white bg-black"/>
+                    <div className={errorInfo.email ? "flex items-center pt-2" : "hidden"}>
+                        <InformationFilled size={16} color="rgb(216 180 254)"/>
+                        <p className="pl-2 text-purple-300">{errorInfo.email}</p>
+                    </div>
                 </div>
             </div>
             <div className="flex justify-center">
                 <div className = "pb-10">
                     <p className="pb-2"> Password </p>
                     <input type="password" onChange={(e) => setFormData({...formData, password: e.target.value})} value = {formData.password} placeholder = "Password" className="border-white rounded-md border-2 w-80 pl-2 py-2 text-white bg-black"/>
+                    <div className={errorInfo.password ? "flex items-center pt-2" : "hidden"}>
+                        <InformationFilled size={16} color="rgb(216 180 254)"/>
+                        <p className="pl-2 text-purple-300">{errorInfo.password}</p>
+                    </div>
                 </div>
             </div>
             <div className = "pb-8 flex justify-center">
@@ -74,10 +89,9 @@ export default function SignUpPage() {
                     </button>
                 {/* </Link> */}
             </div>
-            <div className="text-md hidden"> 
-                <p className="text-center"> Authentication error: {errorInfo} </p>
-            </div> 
-            <hr className="border-0.5 w-96 pb-8 border-gray-500"/>
+            <div className="flex justify-center">
+                <hr className="border-0.5 w-96 pb-8 border-gray-500"/>
+            </div>
             <div className="text-sm"> 
                 <p className="text-gray-500 text-center"> Have an account already? <Link href = "/login"><u className="text-white">Log in to Harmony</u></Link></p>
             </div>
