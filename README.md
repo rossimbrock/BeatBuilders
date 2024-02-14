@@ -3,7 +3,7 @@
 
 ## How to Run application:
 - Install Node.js version 20.11.0 and Docker
-- Run ```make build start```
+- Run ```make start```
 - *Note - first build or builds after cleaning will take longer to run*
 - Application will be open on http://localhost:3000/
 
