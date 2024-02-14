@@ -8,7 +8,7 @@ WORKDIR /usr/src/app
 COPY . .
 
 # Install requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install -r requirements.txt
 
-# Use dockerize to wait for Elasticsearch to be ready before running the script
+# Run program
 CMD ["python3", "spotify_test.py"]
