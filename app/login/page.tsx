@@ -5,8 +5,11 @@ import Link from 'next/link';
 import { useState } from "react";
 import { logInFormValidation, checkForErrors } from "../authValidation";
 import { InformationFilled } from "@carbon/icons-react";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() { 
+    const router = useRouter();
+
     const [formData, setFormData] = useState ({
         email: "",
         password: "" 
@@ -28,6 +31,7 @@ export default function LoginPage() {
             .then((userCredential) => {
                 const user = userCredential.user;
                 console.log(user);
+                router.push("/")
             })
             .catch((error) => {
                 const errorCode = error.code;

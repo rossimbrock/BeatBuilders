@@ -23,6 +23,7 @@ export default function Home() {
   console.log(userQuery);
   const app = initFirebase();
   const auth = getAuth() 
+  
   const logOut = async() => { 
     signOut(auth).then(() => {
       console.log("Successful log out");
@@ -30,6 +31,7 @@ export default function Home() {
       console.log("Error in log out");
     });
   }
+
   return (
     <section className = "px-4 py-6"> 
       <div className="flex justify-between pb-24"> 

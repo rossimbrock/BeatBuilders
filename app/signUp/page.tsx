@@ -6,8 +6,11 @@ import { useState } from "react";
 import { signUpFormValidation, checkForErrors } from "../authValidation";
 import { error } from "console";
 import { InformationFilled } from "@carbon/icons-react";
+import { useRouter } from 'next/navigation'
 
 export default function SignUpPage() { 
+    const router = useRouter();
+
     const [formData, setFormData] = useState ({
         email: "",
         password: "", 
@@ -34,6 +37,7 @@ export default function SignUpPage() {
                 // Signed up 
                 const user = userCredential.user;
                 console.log(user.email);
+                router.push("/")
             })
             .catch((error) => {
                 const errorCode = error.code;
@@ -81,13 +85,12 @@ export default function SignUpPage() {
                 </div>
             </div>
             <div className = "pb-8 flex justify-center">
-                {/* <Link href = ""> */}
-                    <button className= "bg-purple-300 rounded-2xl px-32 py-2 hover:scale-105" onClick={signUp}>
-                        <p className= "font-semibold text-black">
-                                Sign Up
-                        </p>
-                    </button>
-                {/* </Link> */}
+                <button className= "bg-purple-300 rounded-2xl px-32 py-2 hover:scale-105" onClick={signUp}>
+                    <p className= "font-semibold text-black">
+                            Sign Up
+                    </p>
+                </button>
+              
             </div>
             <div className="flex justify-center">
                 <hr className="border-0.5 w-96 pb-8 border-gray-500"/>
