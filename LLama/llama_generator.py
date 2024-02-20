@@ -29,37 +29,20 @@ def generate_response(prompt, model, grammar):
     ctx_prompt = (
         """
 The Spotify database allows searching by Acousticness, Danceability, Energy, Instrumentalness, Liveness, Loudness, Popularity, Speechiness, Time Signature, and Valence. Use these parameters to construct your queries.
-Do NOT add any text outside of the JSON format shown in the examples.
+I will define each attribute below, you will output a JSON format of all attributes that match the mood of the prompt to an equivalent numeric value.
 
-Example 1: "Give me an unpopular song that was played live"
-{
-"accousticness":0.8,
-"danceability":0.2,
-"energy":0.3,
-"instrumentalness":0.7,
-"liveness":1,
-"loudness":10,
-"popularity":0.1,
-"speechiness":0.8,
-"time_signature":0.8,
-"valence":0.2
-}
+"accousticness": Probablilty that the prompt is an acoustic song
+"danceability": How likely the prompt wants to dance to the music
+"energy": How energetic the song is from 0 to 1
+"instrumentalness": Predict if the prompted track has no vocals. 0 being completely spoken and 1 being no vocals.
+"liveness": How likely the song is performed live
+"loudness": Average song loudness in decibels
+"popularity": Percentile of popularity of the prompt
+"speechiness": How much talking should be in the song described from the prompt, 1 being mostly speech.
+"time_signature": The estimated time signature of the prompt
+"valence": How happy or sad the song sounds. 0 being extremely sad and 1 being extremely happy
 
-Example 2: "I need a track for a quiet evening."
-{
-"accousticness":0.5,
-"danceability":0.1,
-"energy":0.2,
-"instrumentalness":0.8,
-"liveness":.4,
-"loudness":5,
-"popularity":0.7,
-"speechiness":0.5,
-"time_signature":0.4,
-"valence":0.6
-}
-
-Now, your turn: "
+Now, estimate the song statistics of a song following this prompt: "
 """
         + prompt
         + '"'
