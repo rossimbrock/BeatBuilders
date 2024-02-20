@@ -1,48 +1,51 @@
-'use client';
-import SongCard from "./SongCard";
+// 'use client';
 import SongListing from "./SongListing";
-import { getAuth, signOut } from "firebase/auth";
+// import { getAuth, signOut } from "firebase/auth";
 import { initFirebase } from "@/firebase/firebase";
 import Link from "next/link";
 import { useState } from "react";
+import UserButton from "@/components/user-button";
+import SongCards from "./SongCards";
+import Search from "./Search";
 
 export default function Home() {
-  const [songCardsData, setSongCardsData] = useState({
-      "cardOne": {
-        title:  "Song Title",
-        artist: "Song Artist", 
-        image: "", 
-      },
-      "cardTwo": { 
-        title: "Song Title", 
-        artist: "Song Artist", 
-        image: ""
-      }
-  });
-  const [userQuery, setUserQuery] = useState("");
-  console.log(userQuery);
-  const app = initFirebase();
-  const auth = getAuth() 
-  
-  const logOut = async() => { 
-    signOut(auth).then(() => {
-      console.log("Successful log out");
-    }).catch((error) => {
-      console.log("Error in log out");
-    });
-  }
-
+  // return (
+  //   <UserButton />
+  // )
+  // const [songCardsData, setSongCardsData] = useState({
+  //     "cardOne": {
+  //       title:  "Song Title",
+  //       artist: "Song Artist", 
+  //       image: "", 
+  //     },
+  //     "cardTwo": { 
+  //       title: "Song Title", 
+  //       artist: "Song Artist", 
+  //       image: ""
+  //     }
+  // });
+  // const [userQuery, setUserQuery] = useState("");
+  // console.log(userQuery);
+  // const app = initFirebase();
+  // const auth = getAuth() 
+  // const logOut = async() => { 
+  //   signOut(auth).then(() => {
+  //     console.log("Successful log out");
+  //   }).catch((error) => {
+  //     console.log("Error in log out");
+  //   });
+  // }
   return (
     <section className = "px-4 py-6"> 
       <div className="flex justify-between pb-24"> 
-        <div className="flex items-center">
-          <img src = "img/BeatBuilderLogo.png" width="50" height="50" className=""/>
-          <p className="pl-4 text-lg font-semibold"> BeatBuilders</p>
-        </div>
-        <Link href = "/login">
-          <button className = "bg-purple-300 rounded-md text-black font-semibold px-8 py-2 hover:scale-110" onClick={logOut}>
-              Log Out
+        <button className = "bg-purple-300 rounded-md text-black font-semibold px-8 py-2">
+              Logo
           </button>
+        <UserButton />
+        <Link href = "/login">
+          {/* <button className = "bg-purple-300 rounded-md text-black font-semibold px-8 py-2 hover:scale-110" onClick={logOut}>
+              Log Out
+          </button> */}
         </Link>
       </div>
       <div className = "flex justify-center text-4xl font-bold pb-10"> 
@@ -50,17 +53,11 @@ export default function Home() {
           Your Feelings. Your Playlist.
         </p>
       </div>
-      <div className = "flex justify-center pb-24">
+      {/* <div className = "flex justify-center pb-24">
         <input type="text" value = {userQuery} onChange = {(e) => setUserQuery(e.target.value)} placeholder = "Find a song based on mood, genre, artist..." className = "w-9/12 py-6 px-4 rounded-xl text-black"/>
-      </div> 
-      <div className="flex justify-center pb-24"> 
-        <div className="w-1/2 flex justify-center "> 
-              <SongCard songTitle={songCardsData.cardOne.title} songArtist={songCardsData.cardOne.artist}/>
-        </div>
-        <div className = "w-1/2 flex justify-center">
-              <SongCard songTitle={songCardsData.cardTwo.title} songArtist={songCardsData.cardTwo.artist}/>
-          </div>
-        </div>
+      </div>  */}
+      <Search />
+      <SongCards />
       <div className = "w-1/2 flex justify-center pr-14">
         <p className="text-3xl font-extralight pb-10"> Your generated playlist </p>
       </div>
