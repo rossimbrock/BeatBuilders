@@ -19,7 +19,7 @@ def parse_args():
     return parser.parse_args()
 
 
-def generate_response(prompt, model, grammar):
+def generate_response(prompt, model, grammar="./grammars/grammar.gbnf"):
     max_tokens = 512
     temperature = 0.3
     top_p = 0.1
