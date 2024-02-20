@@ -1,21 +1,14 @@
-# Docker build
-# Creates a beat-builders-app build
-build:
-	docker build -t beat-builders-app .
-
 # Docker start
-# Starts an existing beat-builders-app build
+# Builds and starts all docker containers
 start:
-	docker run -d --name beat-builders-app -p 3000:3000 beat-builders-app
+	docker-compose up -d --build
 
 # Docker stop
-# Stops the container and cleans it out
+# Stops all containers and cleans volumes
 stop:
-	-@docker stop beat-builders-app
-	-@docker rm beat-builders-app
-	-@docker rmi beat-builders-app
+	docker-compose down -v
 
 # Docker clean
 # Removes docker volumes, use if build issues occur
 clean:
-	-@docker system prune -af --volumes
+	docker system prune -af --volumes
