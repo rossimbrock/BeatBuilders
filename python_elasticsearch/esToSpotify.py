@@ -3,12 +3,13 @@ from spotipy.oauth2 import SpotifyClientCredentials
 import json
 
 class SpotifyMethods: 
+
     #This function takes an Elasticsearch query output and queries the Spotify API to return track information
     def es_to_spotify(esResult):
         
         # API access
-        client_id = "4c0ab737da484e299e251443d295609e"
-        client_secret = "a26012b9bcb446afb761cfe7f56021c9"
+        client_id = ""
+        client_secret = ""
 
         #Create Spotify object
         sp = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials(client_id=client_id, client_secret=client_secret))
