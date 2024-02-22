@@ -11,12 +11,10 @@ export default function Home() {
       "cardOne": {
         title:  "Song Title",
         artist: "Song Artist", 
-        image: "", 
       },
       "cardTwo": { 
         title: "Song Title", 
         artist: "Song Artist", 
-        image: ""
       }
   });
   const [userQuery, setUserQuery] = useState("");
@@ -54,10 +52,10 @@ export default function Home() {
         <input type="text" value = {userQuery} onChange = {(e) => setUserQuery(e.target.value)} placeholder = "Find a song based on mood, genre, artist..." className = "w-9/12 py-6 px-4 rounded-xl text-black"/>
       </div> 
       <div className="flex justify-center pb-24"> 
-        <div className="w-1/2 flex justify-center "> 
+        <div className="w-2/5 flex justify-end pr-4 "> 
               <SongCard songTitle={songCardsData.cardOne.title} songArtist={songCardsData.cardOne.artist}/>
         </div>
-        <div className = "w-1/2 flex justify-center">
+        <div className = "w-2/5 flex justify-start pl-4">
               <SongCard songTitle={songCardsData.cardTwo.title} songArtist={songCardsData.cardTwo.artist}/>
           </div>
         </div>
