@@ -3,6 +3,7 @@ import csv
 import pandas as pd
 from elasticsearch import Elasticsearch, helpers
 import spotipy
+from spotipy.oauth2 import SpotifyClientCredentials
 import time
 
 es = Elasticsearch("http://elasticsearch:9200")
@@ -36,7 +37,7 @@ else:
 
 # Delete index 
 # es.indices.delete(index="songs")
-sp = spotipy.Spotify()
+sp = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials(client_id="4c0ab737da484e299e251443d295609e", client_secret="a26012b9bcb446afb761cfe7f56021c9"))
 
 df = pd.read_csv("Initial_Music_Dataset.csv")
 
@@ -127,7 +128,7 @@ resp = es.search(
             "bool": {
                 "must": {
                     "match_phrase": {
-                        "_id": "0"
+                        "track_name": "bad blood"
                     }
                 }
             }
@@ -135,6 +136,27 @@ resp = es.search(
 )
 print()
 print(resp.body)
+print()
 
+#use response for spotify query
+artist_name = resp.body['hits']['hits'][0]['_source']['artist_name']
+track_name = resp.body['hits']['hits'][0]['_source']['track_name']
+release_date = resp.body['hits']['hits'][0]['_source']['release_date']
+genre = resp.body['hits']['hits'][0]['_source']['genre']
+
+query = f"artist:{artist_name} track:{track_name} year:{release_date}"
+result = sp.search(q=query, type="track")
+
+track_link = result['tracks']['items'][0]['external_urls']['spotify']
+track_id = result['tracks']['items'][0]['id']
+preview_url = result['tracks']['items'][0]['preview_url']
+track_name = result['tracks']['items'][0]['name']
+track_length = result['tracks']['items'][0]['duration_ms']/1000/60
+
+print(track_link)
+print(track_id)
+print(preview_url)
+print(track_name)
+print(track_length, " min")
 
 
