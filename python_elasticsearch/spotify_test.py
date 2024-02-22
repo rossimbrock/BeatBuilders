@@ -126,17 +126,19 @@ resp = es.search(
     index="songs",
     query={
             "bool": {
-                "must": {
+                "must": [{
                     "match_phrase": {
-                        "track_name": "bad blood"
+                        "track_name": "clocks"
                     }
-                }
+                },
+                {
+                     "match_phrase": {
+                          "artist_name": "coldplay"
+                     }
+                }]
             }
     }
 )
-print()
-print(resp.body)
-print()
 
 #use response for spotify query
 artist_name = resp.body['hits']['hits'][0]['_source']['artist_name']
@@ -152,11 +154,13 @@ track_id = result['tracks']['items'][0]['id']
 preview_url = result['tracks']['items'][0]['preview_url']
 track_name = result['tracks']['items'][0]['name']
 track_length = result['tracks']['items'][0]['duration_ms']/1000/60
+album_cover = result['tracks']['items'][0]['album']['images'][0]['url']
 
 print(track_link)
 print(track_id)
 print(preview_url)
 print(track_name)
 print(track_length, " min")
+print(album_cover)
 
 
