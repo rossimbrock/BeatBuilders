@@ -5,6 +5,7 @@ import { getAuth, signOut } from "firebase/auth";
 import { initFirebase } from "@/firebase/firebase";
 import Link from "next/link";
 import { useState } from "react";
+import { ArrowRight } from "@carbon/icons-react";
 
 export default function Home() {
   const [songCardsData, setSongCardsData] = useState({
@@ -52,6 +53,7 @@ export default function Home() {
       </div>
       <div className = "flex justify-center pb-24">
         <input type="text" value = {userQuery} onChange = {(e) => setUserQuery(e.target.value)} placeholder = "Find a song based on mood, genre, artist..." className = "w-9/12 py-6 px-4 rounded-xl text-black"/>
+        <button type="submit"> Submit </button>
       </div> 
       <div className="flex justify-center pb-24"> 
         <div className="w-1/2 flex justify-center "> 
