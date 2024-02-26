@@ -1,6 +1,6 @@
 function sendSearchQueryData(searchData) { 
     $.ajax({ 
-        url: '/process', 
+        url: '/searchQuery', 
         type: 'POST', 
         data: {'search_data': searchData}, 
         success: function(response) { 
