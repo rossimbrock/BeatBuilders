@@ -3,6 +3,7 @@ from langchain.callbacks.manager import CallbackManager
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 from langchain.chains import LLMChain
 from langchain.prompts import PromptTemplate
+import json
 import argparse
 
 
@@ -27,7 +28,7 @@ def generate_response(prompt, model_path, grammar_path="./grammars/grammar.gbnf"
     callback_manager = CallbackManager([StreamingStdOutCallbackHandler()])
     max_tokens = 512
     n_gpu_layers = 4
-    n_batch = 512
+    n_batch = 256
     ctx_size = 4096
     temperature = 0.3
     top_p = 0.8
@@ -49,9 +50,9 @@ I will define each attribute below, you will output a JSON format of all attribu
 "time_signature": The estimated time signature of the prompt
 "valence": How happy or sad the song sounds. 0 being extremely sad and 1 being extremely happy
 
-don't include an attribute in the responce ONLY if you are unsure about what value an attribute should be based on the prompt.
+If the prompt doesn't give you informatoin about an attribute, DO NOT include it in the output.
 
-Now, estimate the song statistics of a song following this prompt: {question}"
+Now, estimate the song statistics of a song following this prompt: {question}
 """
 
     template = PromptTemplate.from_template(ctx_prompt)
@@ -75,6 +76,9 @@ Now, estimate the song statistics of a song following this prompt: {question}"
     llm_chain = LLMChain(prompt=template, llm=llm)
 
     model_output = llm_chain.invoke(prompt)
+
+    # Convert output to JSON
+    # return json.loads(model_output["text"].strip())
     return model_output["text"].strip()
 
 
