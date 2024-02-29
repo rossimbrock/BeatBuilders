@@ -2,7 +2,7 @@
 import csv
 import pandas as pd
 from elasticsearch import Elasticsearch, helpers
-from esToSpotify import SpotifyMethods
+from esToSpotify import es_to_spotify
 import time
 
 es = Elasticsearch("http://elasticsearch:9200")
@@ -138,4 +138,4 @@ resp = es.search(
     }
 )
 
-SpotifyMethods.es_to_spotify(resp.body)
+es_to_spotify(resp.body)
