@@ -12,12 +12,10 @@ export default function Home() {
       "cardOne": {
         title:  "Song Title",
         artist: "Song Artist", 
-        image: "", 
       },
       "cardTwo": { 
         title: "Song Title", 
         artist: "Song Artist", 
-        image: ""
       }
   });
   const [userQuery, setUserQuery] = useState("");
@@ -57,10 +55,10 @@ export default function Home() {
         <button type="submit" onClick={() => sendSearchQueryData(userQuery)} className=" bg-purple-300 px-6 py-4 rounded-xl text-black font-semibold hover:scale-105"> Submit </button>
       </div> 
       <div className="flex justify-center pb-24"> 
-        <div className="w-1/2 flex justify-center "> 
+        <div className="w-2/5 flex justify-end pr-4 "> 
               <SongCard songTitle={songCardsData.cardOne.title} songArtist={songCardsData.cardOne.artist}/>
         </div>
-        <div className = "w-1/2 flex justify-center">
+        <div className = "w-2/5 flex justify-start pl-4">
               <SongCard songTitle={songCardsData.cardTwo.title} songArtist={songCardsData.cardTwo.artist}/>
           </div>
         </div>
