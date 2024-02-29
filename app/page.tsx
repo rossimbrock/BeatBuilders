@@ -5,7 +5,6 @@ import { getAuth, signOut } from "firebase/auth";
 import { initFirebase } from "@/firebase/firebase";
 import Link from "next/link";
 import { useState } from "react";
-import { ArrowRight } from "@carbon/icons-react";
 import {sendSearchQueryData} from "./apiCalls";
 
 export default function Home() {
