@@ -1,4 +1,5 @@
 root ::= answer
-answer ::= "{\n"   "\"accousticness\":"   percent   ",\n"  "\"danceability\":"   percent   ",\n"      "\"energy\":"      percent   ",\n"     "\"instrumentalness\":"      percent   ",\n"      "\"liveness\":"      percent   ",\n"      "\"loudness\":"   number   ",\n"       "\"popularity\":"       percent    ",\n"       "\"speechiness\":"       percent    ",\n"       "\"time_signature\":"       percent    ",\n"       "\"valence\":"       percent   "\n}Q"
-percent ::= "0." [0-9]+
-number ::= ["1-9"]+ percent?
+answer ::= "{\n"   ("\"accousticness\":"   percent   ",\n")?  ("\"danceability\":"   percent   ",\n")?      ("\"energy\":"      percent   ",\n")?     ("\"instrumentalness\":"      percent   ",\n")?      ("\"liveness\":"      percent   ",\n")?      ("\"loudness\":"   number   ",\n")?       ("\"popularity\":"       percent    ",\n")?       ("\"speechiness\":"       percent    ",\n" )?      ("\"time_signature\":"       percent    ",\n")?       ("\"valence\":"       percent   "\n")? "}Q"
+percent ::= "0" decimal
+decimal ::= "." [0-9]+
+number ::= ["1-9"]+ decimal?
