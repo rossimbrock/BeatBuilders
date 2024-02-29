@@ -11,4 +11,4 @@ COPY . .
 RUN pip install -r requirements.txt
 
 # Run program
-CMD ["python3", "spotify_test.py"]
+CMD ["python3", "elasticIndexCreate.py"]
