@@ -2,7 +2,7 @@
 import csv
 import pandas as pd
 from elasticsearch import Elasticsearch, helpers
-import spotipy
+from esToSpotify import es_to_spotify
 import time
 
 es = Elasticsearch("http://elasticsearch:9200")
@@ -36,7 +36,6 @@ else:
 
 # Delete index 
 # es.indices.delete(index="songs")
-sp = spotipy.Spotify()
 
 df = pd.read_csv("Initial_Music_Dataset.csv")
 
@@ -125,16 +124,18 @@ resp = es.search(
     index="songs",
     query={
             "bool": {
-                "must": {
+                "must": [{
                     "match_phrase": {
-                        "_id": "0"
+                        "track_name": "clocks"
                     }
-                }
+                },
+                {
+                     "match_phrase": {
+                          "artist_name": "coldplay"
+                     }
+                }]
             }
     }
 )
-print()
-print(resp.body)
 
-
-
+es_to_spotify(resp.body)
