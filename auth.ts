@@ -141,17 +141,17 @@ export const config = {
     },
     async jwt({ token, account, profile }) {
       // Persist the OAuth access_token and or the user id to the token right after signin
-      console.log("TOKEN: " + Object.keys(token))
-      if (account){
-        console.log("ACCOUNT: " + Object.keys(account))
-      }
-      if (profile){
-        console.log("PROFILE: " + Object.keys(profile))
-      }
-      if (account) {
-        token.accessToken = account.access_token
-        console.log(token.accessToken)
-      }
+      // console.log("TOKEN: " + Object.keys(token))
+      // if (account){
+      //   console.log("ACCOUNT: " + Object.keys(account))
+      // }
+      // if (profile){
+      //   console.log("PROFILE: " + Object.keys(profile))
+      // }
+      // if (account) {
+      //   token.accessToken = account.access_token
+      //   console.log(token.accessToken)
+      // }
       return token
     }
   },

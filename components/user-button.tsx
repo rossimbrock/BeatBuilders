@@ -8,10 +8,14 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu"
+// import { useSession } from "next-auth/react";
+
 import { SignIn, SignOut } from "./auth-components"
 
 export default async function UserButton() {
+  console.log("Rerender");
   const session = await auth()
+  // const { data: session } = useSession();
   if (!session?.user) return <SignIn />
   return (
     <DropdownMenu>
