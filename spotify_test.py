@@ -15,7 +15,7 @@ es = Elasticsearch("http://localhost:9200")
 # es.indices.delete(index="songs")
 sp = spotipy.Spotify()
 
-df = pd.read_csv("Initial_Music_Dataset.csv")
+df = pd.read_csv("Datasets/tcc_ceds_music.csv")
 
 mappings = {
     "properties" : {
@@ -52,47 +52,47 @@ mappings = {
     }
 }
 
-# # Create index name with mappings
-# es.indices.create(index = "songs", mappings = mappings)
+# Create index name with mappings
+es.indices.create(index = "songs", mappings = mappings)
 
-# # Set document up for filling 
+# Set document up for filling 
 
-# for i, row in df.iterrows():
-#         doc = {
-#             "artist_name": row["artist_name"],
-#             "track_name": row["track_name"],
-#             "release_date": row["release_date"],
-#             "genre": row["genre"],
-#             "lyrics": row["lyrics"],
-#             "len": row["len"],
-#             "dating": row["dating"],
-#             "violence": row["violence"],
-#             "world/life":row["world/life"],
-#             "night/time": row["night/time"],
-#             "shake_the_audience": row["shaketheaudience"],
-#             "family/gospel": row["family/gospel"],
-#             "romantic": row["romantic"],
-#             "communication": row["communication"],
-#             "obscene": row["obscene"],
-#             "music": row["music"],
-#             "movement/places": row["movement/places"],
-#             "light/visual_perception": row["light/visualperceptions"],
-#             "family/spirtitual": row["family/spiritual"],
-#             "like/girls": row["like/girls"],
-#             "sadness": row["sadness"],
-#             "feelings": row["feelings"],
-#             "topic": row["topic"],
-#             "age": row["age"],
-#             "acousticness": row["acousticness"],
-#             "danceability": row["danceability"],
-#             "energy": row["energy"],
-#             "instrumentalness": row["instrumentalness"],
-#             "loudness": row["loudness"],
-#             "valence": row["valence"]                           
-#         }
+for i, row in df.iterrows():
+        doc = {
+            "artist_name": row["artist_name"],
+            "track_name": row["track_name"],
+            "release_date": row["release_date"],
+            "genre": row["genre"],
+            "lyrics": row["lyrics"],
+            "len": row["len"],
+            "dating": row["dating"],
+            "violence": row["violence"],
+            "world/life":row["world/life"],
+            "night/time": row["night/time"],
+            "shake_the_audience": row["shaketheaudience"],
+            "family/gospel": row["family/gospel"],
+            "romantic": row["romantic"],
+            "communication": row["communication"],
+            "obscene": row["obscene"],
+            "music": row["music"],
+            "movement/places": row["movement/places"],
+            "light/visual_perception": row["light/visualperceptions"],
+            "family/spirtitual": row["family/spiritual"],
+            "like/girls": row["like/girls"],
+            "sadness": row["sadness"],
+            "feelings": row["feelings"],
+            "topic": row["topic"],
+            "age": row["age"],
+            "acousticness": row["acousticness"],
+            "danceability": row["danceability"],
+            "energy": row["energy"],
+            "instrumentalness": row["instrumentalness"],
+            "loudness": row["loudness"],
+            "valence": row["valence"]                           
+        }
 
-#         # FILL INDEX
-#         es.index(index="songs", id=i, document=doc)
+        # FILL INDEX
+        es.index(index="songs", id=i, document=doc)
 
 # Counting numbers of items in index
 es.indices.refresh(index="songs")
@@ -104,14 +104,17 @@ resp = es.search(
             "bool": {
                 "must": {
                     "match_phrase": {
-                        "_id": "0"
+                        "track_name": "out of the woods"
                     }
                 }
             }
     }
 )
-# print()
-# print(resp.body)
+
+print()
+print(resp.body)
+
+print(sp.search(resp.body))
 
 
 
