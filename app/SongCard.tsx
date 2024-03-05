@@ -1,6 +1,6 @@
 import { FavoriteFilled, ThumbsDownFilled } from "@carbon/icons-react";
-import React, { useState, useEffect } from 'react';
-import pullCoverArt from "./pullCoverArt";
+import React, { useState, useEffect, useRef } from 'react';
+import pullSongInfo from "./pullSongInfo";
 
 interface SongCardProps {
     songTitle: string;
@@ -9,34 +9,76 @@ interface SongCardProps {
 
 const SongCard: React.FC<SongCardProps> = ({ songTitle, songArtist }) => {
     const [coverUrl, setCoverUrl] = useState<string>('');
+    const [previewUrl, setPreviewUrl] = useState<string>('');
+    const [showUnavailableMessage, setShowUnavailableMessage] = useState<boolean>(false);
+    const audioPlayerRef = useRef<HTMLAudioElement>(null);
 
     useEffect(() => {
-        const pullCover = async () => {
-            const url = await pullCoverArt(songTitle, songArtist);
-            if (url) setCoverUrl(url);
+        const pullInfo = async () => {
+            const result = await pullSongInfo(songTitle, songArtist);
+            if (result) {
+                setCoverUrl(result.coverUrl || '');
+                setPreviewUrl(result.previewUrl || '');
+            }
         };
 
-        pullCover();
-    }, [songTitle, songArtist]); // Dependencies to re-fetch if songTitle or songArtist change
-    return (
-        <div className="flex-col w-1/2 justify-center items-center max-w-xs mx-auto">
-            <div className="border-2 border-purple-300 px-3 py-3 rounded-lg shadow-lg w-full"> 
-                <div className="bg-purple-300 flex justify-center items-center w-76 h-76 rounded-md overflow-hidden">
-                    {coverUrl && <img src={coverUrl} alt="Album Cover" style={{ maxWidth: '300px', maxHeight: '300px', objectFit: 'cover' }} />}
-                </div>
-                <p className="text-2xl font-semibold pt-2" style={{ textTransform: 'capitalize' }}>{songTitle}</p>
-                <p className="font-extralight font-lg" style={{ textTransform: 'capitalize' }}>{songArtist}</p>
+        pullInfo();
+    }, [songTitle, songArtist]);
 
+    const handlePlayPause = () => {
+        // If there's no preview URL, show the unavailable message and return
+        if (!previewUrl) {
+            setShowUnavailableMessage(true);
+            // Wait 3 seconds until removing unavailable messgae
+            setTimeout(() => {
+                setShowUnavailableMessage(false);
+            }, 3000);
+            return;
+        }
+        
+        // If there's a preview URL, toggle play/pause
+        document.querySelectorAll('audio').forEach((el) => {
+            if (el !== audioPlayerRef.current) {
+                el.pause();
+            }
+        });
+
+        if (audioPlayerRef.current) {
+            if (audioPlayerRef.current.paused) {
+                audioPlayerRef.current.play();
+            } else {
+                audioPlayerRef.current.pause();
+            }
+        }
+    };
+
+    return (
+    <div className="flex-col justify-center items-center mx-auto" style={{ width: '325px' }}>
+        <div className="border-2 border-purple-300 rounded-lg shadow-lg relative" style={{ padding: '10px', backgroundColor: 'transparent', width: '325px', margin: 'auto' }}>
+            <div className="flex justify-center items-center rounded-md overflow-hidden relative" style={{ width: '300px', height: '300px', margin: '0 auto' }}>
+                <img src={coverUrl} alt="Album Cover" style={{ width: '100%', height: '100%', objectFit: 'cover', cursor: 'pointer', borderRadius: '8px' }} onClick={handlePlayPause} />
+                {showUnavailableMessage && (
+                    <div className='songUnavailable'>
+                        Song Preview Unavailable
+                    </div>
+                )}
             </div>
-            <div className="flex justify-center pt-8">
-                <button className="pr-8 hover:scale-125"> 
-                    <FavoriteFilled size={32} color="white"/>
-                </button>
-                <button className="hover:scale-125"> 
-                    <ThumbsDownFilled size={32} color="white" /> 
-                </button>
+            <div style={{ textAlign: 'left', paddingTop: '0' }}>
+                <p className="text-2xl font-semibold" style={{ textTransform: 'capitalize', margin: '10px 0 0' }}>{songTitle}</p>
+                <p className="font-extralight font-lg" style={{ textTransform: 'capitalize', margin: '0' }}>{songArtist}</p>
             </div>
         </div>
+        <div className="flex justify-center pt-8">
+            <button className="pr-8 hover:scale-125">
+                <FavoriteFilled size={32} color="white"/>
+            </button>
+            <button className="hover:scale-125">
+                <ThumbsDownFilled size={32} color="white" />
+            </button>
+        </div>
+        {previewUrl && <audio ref={audioPlayerRef} src={previewUrl} controls style={{ display: "none" }} />}
+    </div>
     );
-}
+};
+
 export default SongCard;
