@@ -30,3 +30,5 @@ services:
   flask_server:
     build:
       context: ./flask_server
+    ports:
+      - "5000:5000"
