@@ -6,8 +6,8 @@ import json
 def es_to_spotify(esResult):
         
     #API access
-    client_id = ""
-    client_secret = ""
+    client_id = "d89adefdd65649179d78f7f8be8f54ba"
+    client_secret = "7daa071f5b7a4d7894ec8155123b451b"
 
     #Create Spotify object
     sp = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials(client_id=client_id, client_secret=client_secret))
