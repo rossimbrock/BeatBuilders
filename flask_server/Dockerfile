@@ -10,5 +10,9 @@ COPY . .
 # Install requirements.txt
 RUN pip install -r requirements.txt
 
+EXPOSE 5000
+
+ENV FLASK_APP=api_endpoints.py
+
 # Run program
-CMD ["python3", "api_endpoints.py"]
+CMD ["flask", "run", "--host", "0.0.0.0"]
