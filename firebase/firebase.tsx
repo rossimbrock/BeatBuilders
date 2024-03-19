@@ -2,7 +2,7 @@
 
 import { initializeApp } from "firebase/app";
 
-import { firebaseConfig } from "./config";
+import { firebaseConfig } from "./authConfig";
 // TODO: Add SDKs for Firebase products that you want to use
 
 // https://firebase.google.com/docs/web/setup#available-libraries
