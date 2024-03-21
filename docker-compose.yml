@@ -9,6 +9,7 @@ services:
       - /usr/src/app/node_modules
     depends_on:
       - elasticsearch
+      - flask_server
     environment:
       - ELASTICSEARCH_URL=http://elasticsearch:9200
     command: npm run dev
@@ -26,3 +27,8 @@ services:
         context: ./python_elasticsearch
       depends_on:
         - elasticsearch
+  flask_server:
+    build:
+      context: ./flask_server
+    ports:
+      - "5000:5000"
