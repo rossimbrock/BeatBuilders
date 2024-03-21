@@ -1,4 +1,5 @@
 import NextAuth from "next-auth"
+import SpotifyUserAPI from "./spotify_user.js"
 
 // import Apple from "next-auth/providers/apple"
 // import Atlassian from "next-auth/providers/atlassian"
@@ -117,7 +118,9 @@ export const config = {
     // Reddit,
     // Salesforce,
     // Slack,
-    Spotify,
+    Spotify({
+      authorization: "https://accounts.spotify.com/authorize?scope=user-read-email,playlist-modify-private,playlist-modify-public",
+    }),
     // Strava,
     // Todoist,
     // Trakt,
@@ -148,10 +151,33 @@ export const config = {
       // if (profile){
       //   console.log("PROFILE: " + Object.keys(profile))
       // }
-      // if (account) {
-      //   token.accessToken = account.access_token
-      //   console.log(token.accessToken)
-      // }
+      if (account) {
+        token.accessToken = account.access_token
+        console.log("Access Token: " + token.accessToken)
+
+        var SpotifyWebApi = require('spotify-web-api-node');
+    
+        // credentials are optional
+        var spotifyApi = new SpotifyWebApi({
+          clientId: '1a6471f93c664dfd81ab30423bccd9c4',
+          clientSecret: '22b332d643a348abb981e268852fc4b0',
+          redirectUri: 'http://www.example.com/callback'
+        });
+
+        // spotifyApi.
+
+        // let SpotifyAPI = new SpotifyUserAPI()
+        spotifyApi.setAccessToken(token.accessToken);
+        // SpotifyAPI.createPlaylist()
+
+        let tracks = [
+          "spotify:track:7GCaZax7ExKSNYFv8eQCvL",
+          "spotify:track:6jRX28JQ6SoyLj0FqYEqFs",
+          "spotify:track:4H7WNRErSbONkM06blBoGc",
+          "spotify:track:4iz9lGMjU1lXS51oPmUmTe",
+        ]
+        SpotifyUserAPI.createPlaylistFromSongList(spotifyApi, tracks)
+      }
       return token
     }
   },

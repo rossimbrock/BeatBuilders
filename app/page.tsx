@@ -39,14 +39,15 @@ export default function Home() {
   return (
     <section className = "px-4 py-6"> 
       <div className="flex justify-between pb-24"> 
-        <button className = "bg-purple-300 rounded-md text-black font-semibold px-8 py-2">
-              Logo
-          </button>
+        <div className="flex items-center">
+          <img src = "img/BeatBuilderLogo.png" width="50" height="50" className=""/>
+          <p className="pl-4 text-lg font-semibold"> BeatBuilders</p>
+        </div>
         <UserButton />
         <Link href = "/login">
-          {/* <button className = "bg-purple-300 rounded-md text-black font-semibold px-8 py-2 hover:scale-110" onClick={logOut}>
+          <button className = "bg-purple-300 rounded-md text-black font-semibold px-8 py-2 hover:scale-110">
               Log Out
-          </button> */}
+          </button>
         </Link>
       </div>
       <div className = "flex justify-center text-4xl font-bold pb-10"> 

@@ -19,13 +19,13 @@ export function SignIn({
 //   )
 // }
 
-  const handleSignIn = async () => {
-    await signIn(provider) // Prevents automatic redirection after sign out
-  }
+  // const handleSignIn = async () => {
+  //   await signIn('spotfiy') // Prevents automatic redirection after sign out
+  // }
 
   return (
-    <Button variant="ghost" className="w-full p-0" onClick={handleSignIn} {...props}>
-      Sign In
+    <Button variant="ghost" className="w-full p-0" onClick={() => signIn('spotify')} {...props}>
+      Link Spotify
     </Button>
   )
 }
@@ -55,7 +55,6 @@ export function SignIn({
 //   );
   export function SignOut(props: React.ComponentPropsWithRef<typeof Button>) {
     const handleSignOut = async () => {
-      console.log("SIGNING-OUT")
       await signOut({ redirect: false }) // Prevents automatic redirection after sign out
       location.reload()
     }
