@@ -1,61 +1,109 @@
-from langchain_community.llms import LlamaCpp
+from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.callbacks.manager import CallbackManager
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 from langchain.chains import LLMChain
-from langchain.prompts import PromptTemplate
+from langchain.prompts import PromptTemplate, FewShotPromptTemplate
 import json
-import argparse
-
-
-def parse_args():
-    parser = argparse.ArgumentParser(
-        prog="Song Feel Generator",
-        description="Generates a song data JSON file that fits the given prompt",
-    )
-    parser.add_argument("-m", "--model", help="Path to the LLM model to use")
-    parser.add_argument(
-        "-g",
-        "--grammar",
-        help="Path to the grammar file to use",
-        default="./grammars/grammar.gbnf",
-        type=str,
-    )
-    return parser.parse_args()
 
 
 def generate_response(prompt, model_path, grammar_path="./grammars/grammar.gbnf"):
+    # Few-Shot
+    examples = [
+    {"question": "I want a song that makes me feel like I'm walking through the forest at midnight", "query": """
+{{
+  "size": 30,
+  "query": {{
+    "bool": {{
+      "must": [
+        {{"range": {{"acousticness": {{"gte": 0.5}}}}}},
+        {{"range": {{"energy": {{"lte": 0.3}}}}}},
+        {{"range": {{"instrumentalness": {{"gte": 0.7}}}}}}
+      ]
+    }}
+  }}
+}}
+"""},  
+    {"question": "I want a song that sounds like a rainy day.", "query": """
+{{
+  "size": 30,
+  "query": {{
+    "bool": {{
+      "must": [
+        {{"range": {{"acousticness": {{"gte": 0.5}}}}}},
+        {{"range": {{"energy": {{"lte": 0.3}}}}}},
+        {{"range": {{"instrumentalness": {{"gte": 0.7}}}}}}
+      ]
+    }}
+  }}
+}}
+"""},  
+    {"question": "Give me a track that's perfect for a road trip under the stars.", "query": """
+{{
+  "size": 30,
+  "query": {{
+    "bool": {{
+      "must": [
+        {{"range": {{"energy": {{"gte": 0.5}}}}}},
+        {{"range": {{"valence": {{"gte": 0.5}}}}}},
+        {{"range": {{"danceability": {{"gte": 0.5}}}}}}
+      ]
+    }}
+  }}
+}}
+"""},
+    {"question": "I need a powerful motivational speech", "query": """
+{{
+  "size": 30,
+  "query": {{
+    "bool": {{
+      "must": [
+        {{"range": {{"speechiness": {{"gte": 0.66}}}}}}
+      ]
+    }}
+  }}
+}}
+"""} 
+    ]
 
-    callback_manager = CallbackManager([StreamingStdOutCallbackHandler()])
-    max_tokens = 512
-    n_gpu_layers = 4
-    n_batch = 256
-    ctx_size = 4096
-    temperature = 0.3
-    top_p = 0.8
-    echo = False
-    stop = ["Q"]
+    example_template = """
+    Question: {question}
+    ESQuery: {query}
+    """
 
-    ctx_prompt = """
-The Spotify database allows searching by Acousticness, Danceability, Energy, Instrumentalness, Liveness, Loudness, Popularity, Speechiness, Time Signature, and Valence. Use these parameters to construct your queries.
-I will define each attribute below, you will output a JSON format of all attributes that match the mood of the prompt to an equivalent numeric value.
+    example_prompt = PromptTemplate(
+        input_variables=["question", "query"],
+        template=example_template
+    )
 
-"accousticness": Probablilty that the prompt is an acoustic song
-"danceability": How likely the prompt wants to dance to the music
-"energy": How energetic the song is from 0 to 1
-"instrumentalness": Predict if the prompted track has no vocals. 0 being completely spoken and 1 being no vocals.
-"liveness": How likely the song is performed live
-"loudness": How loud the song the prompt is describing is in decibels
-"popularity": Percentile of popularity of the prompt
-"speechiness": How much talking should be in the song described from the prompt, 1 being mostly speech.
-"time_signature": The estimated time signature of the prompt
-"valence": How happy or sad the song sounds. 0 being extremely sad and 1 being extremely happy
+    prefix="""
+    The Spotify database allows searching by Acousticness, Danceability, Energy, Instrumentalness, Liveness, Popularity, Speechiness, Time Signature, and Valence. Use these columns to construct your queries.
 
-If the prompt doesn't give you informatoin about an attribute, DO NOT include it in the output.
+    Given an input question, create a syntactically correct Elasticsearch query that maps the prompt to the columns of the Spotify database. Unless the user specifies a specific number of examples in their question, limit the query to at most 30 results and only use term instead of match.
 
-Now, estimate the song statistics of a song following this prompt: {question}
-"""
 
-    template = PromptTemplate.from_template(ctx_prompt)
+    "accousticness": Probablilty that the prompt is an acoustic song, [0.0, 1.0].
+    "danceability": How likely the prompt wants to dance to the music, [0.0, 1.0].
+    "energy": How energetic the song is, [0.0, 1.0].
+    "instrumentalness": Predict if the prompted track has no vocals. 0 being completely spoken and 1 being no vocals, [0.0, 1.0].
+    "liveness": How likely the song is performed live, [0.0, 1.0].
+    "loudness": How loud the song the prompt is describing is in decibels, [-60,0]db.
+    "popularity": Percentile of popularity of the prompt, [0.0, 1.0].
+    "speechiness": How much talking should be in the song described from the prompt. <0.33 tracks that are non-speech like, [0.33- 0.66: contains music and speech, >0.66: made entirely of spoken words].
+    "time_signature": The estimated time signature of the prompt, [3, 7](indicating time signatures of "3/4", to "7/4").
+    "valence": How happy or sad the song sounds, [0.0, 1.0].
+
+
+    Only query for the few relevant columns given the question. The query should be a valid JSON object.
+    """
+
+few_shot_prompt = FewShotPromptTemplate(
+    examples=examples,
+    example_prompt=example_prompt,
+    prefix=prefix,
+    suffix="Question: {question}\nESQuery:",
+    input_variables=["question"],
+    example_separator="\n\n",
+)
 
     llm = LlamaCpp(
         model_path=model_path,
