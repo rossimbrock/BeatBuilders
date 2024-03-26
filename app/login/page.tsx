@@ -19,6 +19,8 @@ export default function LoginPage() {
         email: "",
         password: "" 
     })
+
+    const [googleErrorInfo, setGoogleErrorInfo]= useState("")
     
     const app = initFirebase();
     const auth = getAuth();
@@ -34,8 +36,7 @@ export default function LoginPage() {
                 router.push("/")
             })
             .catch((error) => {
-                const errorCode = error.code;
-                const errorMessage = error.message;
+                setGoogleErrorInfo("Incorrect login credentials")
             });
         } else {
             setErrorInfo(errors);
@@ -66,6 +67,12 @@ export default function LoginPage() {
                         <InformationFilled size={16} color="rgb(216 180 254)"/>
                         <p className="pl-2 text-purple-300">{errorInfo.password}</p>
                     </div>
+                </div>
+            </div>
+            <div className = {googleErrorInfo ?  "flex justify-center pb-4": "hidden"}>
+                <div className="flex items-center border-2 rounded-md p-2 border-purple-300">
+                    <InformationFilled size={16} color="white"/>
+                    <p className = "pl-2 font-semibold"> {googleErrorInfo} </p>
                 </div>
             </div>
             <div className = "pb-8 flex justify-center">

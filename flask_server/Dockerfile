@@ -10,9 +10,9 @@ COPY . .
 # Install requirements.txt
 RUN pip install -r requirements.txt
 
-EXPOSE 5000
+EXPOSE 8080
 
 ENV FLASK_APP=api_endpoints.py
 
 # Run program
-CMD ["flask", "run", "--host", "0.0.0.0"]
+CMD ["flask", "run", "--host", "0.0.0.0", "--port=8080"]
