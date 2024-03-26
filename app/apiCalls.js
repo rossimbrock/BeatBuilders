@@ -1,5 +1,5 @@
 export function sendSearchQueryData(searchData) {
-    fetch ("http://localhost:5000/searchQuery", {
+    fetch ("http://localhost:8080/searchQuery", {
         method: "POST",
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({search_data:searchData})
