@@ -29,6 +29,7 @@ services:
         - elasticsearch
   flask_server:
     build:
-      context: ./flask_server
+      context: .
+      dockerfile: ./flask_server/Dockerfile
     ports:
       - "5000:5000"

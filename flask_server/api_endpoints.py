@@ -1,7 +1,8 @@
 from flask import Flask,request, jsonify
 from flask_cors import CORS
 from elasticsearch import Elasticsearch
-from gemini_generator import generate_response
+from LLama.gemini_generator import generate_response
+
 
 app = Flask(__name__)
 CORS(app)

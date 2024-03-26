@@ -4,11 +4,13 @@ FROM python:3.9
 # Working Directory
 WORKDIR /usr/src/app
 
-# Copy the current directory
-COPY . .
-
 # Install requirements.txt
+COPY ./flask_server/requirements.txt .
 RUN pip install -r requirements.txt
+
+# Copy the current directory content of flask_server and the llama directory
+COPY ./flask_server/ .
+COPY ./LLama/ ./LLama/
 
 EXPOSE 5000
 
