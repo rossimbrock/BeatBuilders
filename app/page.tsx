@@ -6,18 +6,39 @@ import { initFirebase } from "@/firebase/firebase";
 import Link from "next/link";
 import { useState } from "react";
 import {sendSearchQueryData} from "./apiCalls";
+import UserButton from "@/components/user-button";
+import GeneratedPlaylist from "./GeneratedPlaylist";
+import { SessionProvider } from "next-auth/react";
+import type { AppProps } from 'next/app';
+import Track from "@/Track";
 
-export default function Home() {
-  const [songCardsData, setSongCardsData] = useState({
-      "cardOne": {
-        title:  "Paranoid",
-        artist: "Black Sabbath", 
-      },
-      "cardTwo": { 
-        title: "Mississippi Queen", 
-        artist: "Mountain", 
-      }
-  });
+export default function Home({ Component, pageProps }: AppProps) {
+  // const [songCardsData, setSongCardsData] = useState({
+  //     "cardOne": {
+  //       title:  "Paranoid",
+  //       artist: "Black Sabbath", 
+  //     },
+  //     "cardTwo": { 
+  //       title: "Mississippi Queen", 
+  //       artist: "Mountain", 
+  //     }
+  // });
+
+  const [songQueue, setSongQueue] = useState([
+    new Track("spotify:track:623rRTKwGmgjH6sjE9uWLh", "Scatman (ski-ba-bop-ba-dop-bop)", "Scatman John"),
+    new Track("spotify:track:67WTwafOMgegV6ABnBQxcE", "Some Nights", "fun."),
+  ]
+  );
+
+  const [songCardOne, setSongCardOne] = useState(
+    new Track("spotify:track:7GCaZax7ExKSNYFv8eQCvL", "The Goofy Goober Song", "Spongebob Squarepants")
+  );
+
+  const [songCardTwo, setSongCardTwo] = useState(
+    new Track("spotify:track:0Bo5fjMtTfCD8vHGebivqc", "Axel F", "Crazy Frog")
+  );
+
+  const [chosenSongList, setChosenSongList] = useState<Track[]>([]);
   const [userQuery, setUserQuery] = useState("");
   console.log(userQuery);
   const app = initFirebase();
@@ -31,13 +52,25 @@ export default function Home() {
     });
   }
 
+  const addSongToChosenList = (track: Track) => {
+    setChosenSongList(prevChosenSongList => [...prevChosenSongList, track])
+    if (track === songCardOne){
+      setSongCardOne(songQueue[0])
+    } else {
+      setSongCardTwo(songQueue[0])
+    }
+    setSongQueue(prevQueue => prevQueue.slice(1));
+  }
+
   return (
+    <SessionProvider session={pageProps?.session}>
     <section className = "px-4 py-6"> 
       <div className="flex justify-between pb-24"> 
         <div className="flex items-center">
           <img src = "img/BeatBuilderLogo.png" width="50" height="50" className=""/>
           <p className="pl-4 text-lg font-semibold"> BeatBuilders</p>
         </div>
+        {/* <UserButton/> */}
         <Link href = "/login">
           <button className = "bg-purple-300 rounded-md text-black font-semibold px-8 py-2 hover:scale-110" onClick={logOut}>
               Log Out
@@ -56,13 +89,14 @@ export default function Home() {
       </div> 
       <div className="flex justify-center pb-24"> 
         <div className="w-2/5 flex justify-end pr-4 "> 
-              <SongCard songTitle={songCardsData.cardOne.title} songArtist={songCardsData.cardOne.artist}/>
+              <SongCard track={songCardOne} addSongToList={addSongToChosenList} />
         </div>
         <div className = "w-2/5 flex justify-start pl-4">
-              <SongCard songTitle={songCardsData.cardTwo.title} songArtist={songCardsData.cardTwo.artist}/>
+              <SongCard track={songCardTwo} addSongToList={addSongToChosenList}/>
           </div>
         </div>
-      <div className = "w-1/2 flex justify-center pr-14">
+        <GeneratedPlaylist tracks={chosenSongList} />
+      {/* <div className = "w-1/2 flex justify-center pr-14">
         <p className="text-3xl font-extralight pb-10"> Your generated playlist </p>
       </div>
       <div className="flex justify-center">
@@ -91,7 +125,8 @@ export default function Home() {
             <SongListing number = "2" title = "Landslide" artist = "Fleetwood Mac" dateAdded="Feb 1, 2024"/>
           </tbody>
         </table>
-      </div>
+      </div> */}
     </section>
+    </SessionProvider>
   );
 }
