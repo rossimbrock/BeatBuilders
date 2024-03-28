@@ -10,12 +10,12 @@ import {sendSearchQueryData} from "./apiCalls";
 export default function Home() {
   const [songCardsData, setSongCardsData] = useState({
       "cardOne": {
-        title:  "Saturn",
-        artist: "SZA", 
+        title:  "Paranoid",
+        artist: "Black Sabbath", 
       },
       "cardTwo": { 
-        title: "Valentine", 
-        artist: "Laufey", 
+        title: "Mississippi Queen", 
+        artist: "Mountain", 
       }
   });
   const [userQuery, setUserQuery] = useState("");

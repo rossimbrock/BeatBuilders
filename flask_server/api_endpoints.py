@@ -1,5 +1,6 @@
-from flask import Flask,request
+from flask import Flask,request,jsonify
 from flask_cors import CORS
+import requests
 
 app = Flask(__name__)
 CORS(app)
@@ -16,6 +17,19 @@ def process_search_data():
 def save_search_query(search_query): 
     global user_search_query;
     user_search_query = search_query
+
+def query_deezer_api(search_query):
+    url = "https://api.deezer.com/search"
+    params = {'q': search_query}
+    
+    try:
+        response = requests.get(url, params=params)
+        if response.status_code == 200:
+            return jsonify(response.json())
+        else:
+            return jsonify({'error': 'Failed to get data from Deezer API', 'status_code': response.status_code}), response.status_code
+    except requests.RequestException as e:
+        return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
     app.run()
