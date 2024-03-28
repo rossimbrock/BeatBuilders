@@ -1,6 +1,8 @@
 from langchain.chains import LLMChain
 from langchain.prompts import PromptTemplate, FewShotPromptTemplate
 from langchain_google_genai import ChatGoogleGenerativeAI
+from elasticsearch import Elasticsearch, helpers
+import json
 
 GOOGLE_API_KEY="AIzaSyAB1MXhSKFdoCgybzwo5OaykMmxtr_yhMM"
 
@@ -83,7 +85,6 @@ Given an input question, create a syntactically correct Elasticsearch query that
 "instrumentalness": Predict if the prompted track has no vocals. 0 being completely spoken and 1 being no vocals, [0.0, 1.0].
 "liveness": How likely the song is performed live, [0.0, 1.0].
 "loudness": How loud the song the prompt is describing is in decibels, [-60,0]db.
-"popularity": Percentile of popularity of the prompt, [0.0, 1.0].
 "speechiness": How much talking should be in the song described from the prompt. <0.33 tracks that are non-speech like, [0.33- 0.66: contains music and speech, >0.66: made entirely of spoken words].
 "time_signature": The estimated time signature of the prompt, [3, 7](indicating time signatures of "3/4", to "7/4").
 "valence": How happy or sad the song sounds, [0.0, 1.0].
@@ -112,16 +113,26 @@ def generate_response(prompt):
 
     # Convert output to JSON
     # return json.loads(model_output["text"].strip())
-    return model_output["text"].strip()
+    query_dict = json.loads(model_output["text"].strip())
+    return query_dict
 
+    # send one row from the database, send a query that doesn't work
 
 def main():
+    es = Elasticsearch("http://localhost:9200")
+
     prompt = input("Enter a prompt:\n")
-
-    json = generate_response(prompt)
+    query_dict = generate_response(prompt)
     print("Model Output:\n")
-    print(json)
+    # print(json_string)
+    print(query_dict)
 
+    response = es.search(index="songs", body=query_dict)
+    # Extract the hits from the Elasticsearch response
+    hits = response['hits']['hits']
+    # Convert hits to a list of source documents (assuming you want the _source field)
+    songs_returned = [hit['_source'] for hit in hits]
+    print(songs_returned)
 
 if __name__ == "__main__":
     main()

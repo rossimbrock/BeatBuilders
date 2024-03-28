@@ -33,3 +33,5 @@ services:
       dockerfile: ./flask_server/Dockerfile
     ports:
       - "8080:8080"
+    environment:
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
