@@ -1,6 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
 import { Button } from "./ui/button"
-import { auth } from "auth"
+// import { auth } from "auth"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,11 +11,38 @@ import {
 // import { useSession } from "next-auth/react";
 
 import { SignIn, SignOut } from "./auth-components"
+import exp from "constants"
+import { GetServerSideProps } from 'next';
+import { auth } from "auth"
+import { Session } from "next-auth";
 
-export default async function UserButton() {
+type UserButtonProps = {
+  // session: Session | null; // Define SessionType according to your auth() function's return type
+  tracks: Array<Object>;
+};
+
+// export default async function UserButton(props) {
+const UserButton: React.FC<UserButtonProps> = async ({ tracks }) => {
   const session = await auth()
   // const { data: session } = useSession();
   if (!session?.user) return <SignIn />
+
+  // var SpotifyWebApi = require('spotify-web-api-node');
+    
+  //       // credentials are optional
+  //   var spotifyApi = new SpotifyWebApi({
+  //     clientId: '1a6471f93c664dfd81ab30423bccd9c4',
+  //     clientSecret: '22b332d643a348abb981e268852fc4b0',
+  //     redirectUri: 'http://www.example.com/callback'
+  //   });
+
+  //   // spotifyApi.
+
+  //   // let SpotifyAPI = new SpotifyUserAPI()
+  //   spotifyApi.setAccessToken(token.accessToken);
+  //   // SpotifyAPI.createPlaylist()
+
+  //   SpotifyUserAPI.createPlaylistFromSongList(spotifyApi, tracks)
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -49,3 +76,5 @@ export default async function UserButton() {
     </DropdownMenu>
   )
 }
+
+export default UserButton

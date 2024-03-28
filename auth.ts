@@ -1,6 +1,7 @@
 import NextAuth from "next-auth"
 import SpotifyUserAPI from "./spotify_user.js"
-
+import Tracks from './Tracks.js';
+// import SpotifyUserAPI from "./spotify_user.js";
 // import Apple from "next-auth/providers/apple"
 // import Atlassian from "next-auth/providers/atlassian"
 // import Auth0 from "next-auth/providers/auth0"
@@ -152,8 +153,9 @@ export const config = {
       //   console.log("PROFILE: " + Object.keys(profile))
       // }
       if (account) {
-        token.accessToken = account.access_token
-        console.log("Access Token: " + token.accessToken)
+        // token.accessToken = account.access_token
+        let tracks = new Tracks()
+        console.log("Access Token: " + account.access_token)
 
         var SpotifyWebApi = require('spotify-web-api-node');
     
@@ -164,19 +166,15 @@ export const config = {
           redirectUri: 'http://www.example.com/callback'
         });
 
-        // spotifyApi.
+        // // spotifyApi.
 
-        // let SpotifyAPI = new SpotifyUserAPI()
-        spotifyApi.setAccessToken(token.accessToken);
-        // SpotifyAPI.createPlaylist()
+        // // let SpotifyAPI = new SpotifyUserAPI()
+        spotifyApi.setAccessToken(account.access_token);
+        // SpotifyAPI.createPlay
+        // // SpotifyAPI.createPlaylist()
 
-        let tracks = [
-          "spotify:track:7GCaZax7ExKSNYFv8eQCvL",
-          "spotify:track:6jRX28JQ6SoyLj0FqYEqFs",
-          "spotify:track:4H7WNRErSbONkM06blBoGc",
-          "spotify:track:4iz9lGMjU1lXS51oPmUmTe",
-        ]
-        SpotifyUserAPI.createPlaylistFromSongList(spotifyApi, tracks)
+        SpotifyUserAPI.createPlaylistFromSongList(spotifyApi, Tracks.getTrackListIds())
+        
       }
       return token
     }

@@ -2,28 +2,26 @@
 
 import { useState } from "react";
 import SongCard from "./SongCard";
+import Track from "./../Track.js";
 
 export default function SongCards() {
+
+    let tracks = [
+        new Track("spotify:track:7GCaZax7ExKSNYFv8eQCvL", "The Goofy Goober Song", "Spongebob Squarepants"),
+        new Track("spotify:track:67awxiNHNyjMXhVgsHuIrs", "Turn Down For What", "DJ Whatever")
+    ]
     const [songCardsData, setSongCardsData] = useState({
-        "cardOne": {
-          title:  "Song Title",
-          artist: "Song Artist", 
-          image: "", 
-        },
-        "cardTwo": { 
-          title: "Song Title", 
-          artist: "Song Artist", 
-          image: ""
-        }
+        "cardOne": new Track("spotify:track:7GCaZax7ExKSNYFv8eQCvL", "The Goofy Goober Song", "Spongebob Squarepants"),
+        "cardTwo": new Track("spotify:track:67awxiNHNyjMXhVgsHuIrs", "Turn Down For What", "DJ Whatever")
     });
 
     return (
         <div className="flex justify-center pb-24"> 
             <div className="w-1/2 flex justify-center "> 
-                <SongCard songTitle={songCardsData.cardOne.title} songArtist={songCardsData.cardOne.artist}/>
+                <SongCard track={songCardsData.cardOne}/>
             </div>
             <div className = "w-1/2 flex justify-center">
-                <SongCard songTitle={songCardsData.cardTwo.title} songArtist={songCardsData.cardTwo.artist}/>
+                <SongCard track={songCardsData.cardTwo}/>
             </div>
         </div>
     )

@@ -95,6 +95,7 @@ export default class SpotifyUserAPI {
       //         spotifyApi.addTracksToPlaylist(data.body.id, newPlaylist);
       //       })
       //   })
+
       spotifyApi.createPlaylist('HarmonyHub Playlist', { 'description': 'My description', 'public': false })
             .then(function(data) {
               // console.log(data);

@@ -1,15 +1,37 @@
 // 'use client';
-import SongListing from "./SongListing";
+// import SongListing from "./SongListing";
 // import { getAuth, signOut } from "firebase/auth";
 import { initFirebase } from "@/firebase/firebase";
 import Link from "next/link";
 import { useState } from "react";
-import UserButton from "@/components/user-button";
+// import UserButton from "@/components/user-button";
 import SongCards from "./SongCards";
 import Search from "./Search";
 import {sendSearchQueryData} from "./apiCalls";
+import GeneratedPlaylist from "./GeneratedPlaylist";
+
+import { GetServerSideProps } from 'next';
+import { auth } from "auth"
+import { Session } from "next-auth";
+import Track from "./../Track.js";
+import Tracks from "./../Tracks.js";
+
+// export const getServerSideProps: GetServerSideProps = async (context) => {
+//   // Simulating a session fetch. Replace this with your actual session fetching logic.
+//   const session = await auth();
+
+//   return {
+//     props: {
+//       // Make sure session is already resolved here
+//       session: session || null,
+//     },
+//     // session: session || null
+//   };
+// };
 
 export default function Home() {
+
+  // Tracks.addTrack(new Track("spotify:track:7GCaZax7ExKSNYFv8eQCvL", "Goofy Goover", "Spunch"))
   // return (
   //   <UserButton />
   // )
@@ -43,7 +65,7 @@ export default function Home() {
           <img src = "img/BeatBuilderLogo.png" width="50" height="50" className=""/>
           <p className="pl-4 text-lg font-semibold"> BeatBuilders</p>
         </div>
-        <UserButton />
+        {/* <UserButton /> */}
         <Link href = "/login">
           <button className = "bg-purple-300 rounded-md text-black font-semibold px-8 py-2 hover:scale-110">
               Log Out
@@ -62,36 +84,7 @@ export default function Home() {
       </div>  */}
       <Search />
       <SongCards />
-      <div className = "w-1/2 flex justify-center pr-14">
-        <p className="text-3xl font-extralight pb-10"> Your generated playlist </p>
-      </div>
-      <div className="flex justify-center">
-        <table className="table-fixed w-3/4 text-center border-spacing-4 pl-4 border-separate">
-          <thead className="pb-8">
-            <tr className="">
-              <th className="">
-                #
-              </th>
-              <th>
-                Title 
-              </th>
-              <th>
-                Artist 
-              </th>
-              <th>
-                Date Added
-              </th>
-              <th>
-
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <SongListing  title = "The Palisades" number = "1" artist = "Childish Gambino" dateAdded="Feb 2, 2024"/>
-            <SongListing number = "2" title = "Landslide" artist = "Fleetwood Mac" dateAdded="Feb 1, 2024"/>
-          </tbody>
-        </table>
-      </div>
+      <GeneratedPlaylist />
     </section>
   );
 }

@@ -24,8 +24,8 @@ export function SignIn({
   // }
 
   return (
-    <Button variant="ghost" className="w-full p-0" onClick={() => signIn('spotify')} {...props}>
-      Link Spotify
+    <Button variant="ghost" className="p-0" onClick={() => signIn('spotify')} {...props}>
+      Add Playlist to Spotify
     </Button>
   )
 }
