@@ -1,20 +1,17 @@
 // 'use client';
 import SongListing from "./SongListing";
-import UserButton from "@/components/user-button";
-import { Session } from "next-auth";
-import Tracks from "./../Tracks.js"
 import Track from "./../Track.js"
-import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import SpotifyButton from "./SpotifyButton";
 
 
 interface GeneratedPlaylistProps {
     tracks: Track[];
+    setTracks: Dispatch<SetStateAction<Track[]>>;
 }
 
 // const SongCard: React.FC<SongCardProps> = ({ track, addSongToList }) => {
-const GeneratedPlaylist: React.FC<GeneratedPlaylistProps> = ({ tracks }) => {
+const GeneratedPlaylist: React.FC<GeneratedPlaylistProps> = ({ tracks, setTracks }) => {
 // export default function GeneratedPlaylist() {
 
     // let tracks = new Tracks()
@@ -31,7 +28,7 @@ const GeneratedPlaylist: React.FC<GeneratedPlaylistProps> = ({ tracks }) => {
         <div className="flex justify-between items-center w-3/5 pb-10">
             <p className="text-3xl font-extralight">Your generated playlist</p>
             {/* <UserButton session={session} tracks={tracks}/> */}
-            <SpotifyButton tracks={tracks}/>
+            <SpotifyButton tracks={tracks} setTracks={setTracks} />
         </div>
         </div>
         <div className="flex justify-center">
@@ -58,7 +55,7 @@ const GeneratedPlaylist: React.FC<GeneratedPlaylistProps> = ({ tracks }) => {
             <tbody>
                 {tracks.map((track, i) => {
                     return (
-                        <SongListing number={i+1} title={track.title} artist={track.artist} dateAdded={"3/28/2024"}></SongListing>
+                        <SongListing number={i+1} track={track} setTracks={setTracks}></SongListing>
                     )
                 })}
             </tbody>

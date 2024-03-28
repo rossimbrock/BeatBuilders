@@ -1,21 +1,38 @@
 // Some React component
 import SpotifyUserAPI from "@/SpotifyUserAPI";
-import Tracks from "@/Tracks";
+import Track from "@/Track";
 import { signIn, signOut, useSession } from "next-auth/react";
 
 interface SpotifyButtonProps {
-  tracks: Tracks[]
+  tracks: Track[]
+  setTracks: (tracks: Track[]) => void;
 }
-// const SpotifyLoginButton = () => {
-const SpotifyButton: React.FC<SpotifyButtonProps> = ({ tracks }) => {
+
+const SpotifyButton: React.FC<SpotifyButtonProps> = ({ tracks, setTracks }) => {
   const { data: session } = useSession();
+
+  const handleCreatePlaylistClick = () => {
+    if (session){
+      // initialize API, set token
+      let SpotifyUserApi = new SpotifyUserAPI(session.user.access_token);
+      SpotifyUserAPI.createPlaylistFromSongList(Track.getTrackListIds(tracks));
+      localStorage.clear();
+      setTracks([]);
+    }
+  }
 
   if (session) {
     return (
-      <button onClick={() => SpotifyUserAPI.createPlaylistFromSongList(tracks)}>
-        Add Playlist To Spotify
-      </button>
-      // <button onClick={() => signOut()}>Log in with Spotify</button>
+      <div>
+        <button onClick={handleCreatePlaylistClick}>
+          Add Playlist To Spotify
+        </button>
+        {"   |   "}
+        {/* Sign Out Button temporary for now, but I need to further test the Refresh Token Rotation */}
+        <button onClick={() => signOut()}>
+          Sign Out
+        </button>
+      </div>
     )
   }
 

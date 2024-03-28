@@ -1,32 +1,26 @@
 'use client';
 import SongCard from "./SongCard";
-import SongListing from "./SongListing";
 import { getAuth, signOut } from "firebase/auth";
 import { initFirebase } from "@/firebase/firebase";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {sendSearchQueryData} from "./apiCalls";
-import UserButton from "@/components/user-button";
 import GeneratedPlaylist from "./GeneratedPlaylist";
 import { SessionProvider } from "next-auth/react";
 import type { AppProps } from 'next/app';
 import Track from "@/Track";
 
 export default function Home({ Component, pageProps }: AppProps) {
-  // const [songCardsData, setSongCardsData] = useState({
-  //     "cardOne": {
-  //       title:  "Paranoid",
-  //       artist: "Black Sabbath", 
-  //     },
-  //     "cardTwo": { 
-  //       title: "Mississippi Queen", 
-  //       artist: "Mountain", 
-  //     }
-  // });
 
   const [songQueue, setSongQueue] = useState([
     new Track("spotify:track:623rRTKwGmgjH6sjE9uWLh", "Scatman (ski-ba-bop-ba-dop-bop)", "Scatman John"),
     new Track("spotify:track:67WTwafOMgegV6ABnBQxcE", "Some Nights", "fun."),
+    new Track("spotify:track:37ZJ0p5Jm13JPevGcx4SkF", "Livin' On A Prayer", "Bon Jovi"),
+    new Track("spotify:track:2HHtWyy5CgaQbC7XSoOb0e", "Eye of the Tiger", "Survivor"),
+    new Track("spotify:track:6M14BiCN00nOsba4JaYsHW", "Ocean Man", "Ween"),
+    new Track("spotify:track:7yMiX7n9SBvadzox8T5jzT", "Clint Eastwood", "Gorillaz"),
+    new Track("spotify:track:3AydAydLzyyZutA0375XIz", "A-Punk", "Vampire Weekend"),
+    new Track("spotify:track:4u7vj352S98d9iA7ac1EVG", "Alesis", "Mk.gee"),
   ]
   );
 
@@ -53,7 +47,10 @@ export default function Home({ Component, pageProps }: AppProps) {
   }
 
   const addSongToChosenList = (track: Track) => {
-    setChosenSongList(prevChosenSongList => [...prevChosenSongList, track])
+    setChosenSongList(prevChosenSongList => {
+      saveSelectionToLocal([...prevChosenSongList, track]);
+      return [...prevChosenSongList, track]}
+    )
     if (track === songCardOne){
       setSongCardOne(songQueue[0])
     } else {
@@ -61,6 +58,18 @@ export default function Home({ Component, pageProps }: AppProps) {
     }
     setSongQueue(prevQueue => prevQueue.slice(1));
   }
+
+  const saveSelectionToLocal = (tracks: Track[]) => {
+    const serializedSelection = JSON.stringify(tracks);
+    localStorage.setItem('userSelections', serializedSelection);
+  };
+
+  useEffect(() => {
+    const serializedSelections = localStorage.getItem('userSelections');
+    if (serializedSelections) {
+        setChosenSongList(JSON.parse(serializedSelections));
+    }
+  }, []);
 
   return (
     <SessionProvider session={pageProps?.session}>
@@ -70,7 +79,6 @@ export default function Home({ Component, pageProps }: AppProps) {
           <img src = "img/BeatBuilderLogo.png" width="50" height="50" className=""/>
           <p className="pl-4 text-lg font-semibold"> BeatBuilders</p>
         </div>
-        {/* <UserButton/> */}
         <Link href = "/login">
           <button className = "bg-purple-300 rounded-md text-black font-semibold px-8 py-2 hover:scale-110" onClick={logOut}>
               Log Out
@@ -95,37 +103,7 @@ export default function Home({ Component, pageProps }: AppProps) {
               <SongCard track={songCardTwo} addSongToList={addSongToChosenList}/>
           </div>
         </div>
-        <GeneratedPlaylist tracks={chosenSongList} />
-      {/* <div className = "w-1/2 flex justify-center pr-14">
-        <p className="text-3xl font-extralight pb-10"> Your generated playlist </p>
-      </div>
-      <div className="flex justify-center">
-        <table className="table-fixed w-3/4 text-center border-spacing-4 pl-4 border-separate">
-          <thead className="pb-8">
-            <tr className="">
-              <th className="">
-                #
-              </th>
-              <th>
-                Title 
-              </th>
-              <th>
-                Artist 
-              </th>
-              <th>
-                Date Added
-              </th>
-              <th>
-
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <SongListing  title = "The Palisades" number = "1" artist = "Childish Gambino" dateAdded="Feb 2, 2024"/>
-            <SongListing number = "2" title = "Landslide" artist = "Fleetwood Mac" dateAdded="Feb 1, 2024"/>
-          </tbody>
-        </table>
-      </div> */}
+        <GeneratedPlaylist tracks={chosenSongList} setTracks={setChosenSongList}/>
     </section>
     </SessionProvider>
   );
