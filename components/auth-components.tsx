@@ -7,20 +7,6 @@ export function SignIn({
   provider,
   ...props
 }: { provider?: string } & React.ComponentPropsWithRef<typeof Button>) {
-  // return (
-  //   <form
-  //     action={async () => {
-  //       "use server"
-  //       await signIn(provider)
-  //     }}
-  //   >
-  //     <Button {...props}>Link with Spotify</Button>
-  //   </form>
-  // )
-
-  // const handleSignIn = async () => {
-  //   await signIn('spotfiy') // Prevents automatic redirection after sign out
-  // }
 
   return (
     <Button variant="ghost" className="w-full p-0" onClick={() => signIn('spotify')} {...props}>
@@ -29,29 +15,6 @@ export function SignIn({
   )
 }
 
-// export function SignOut(props: React.ComponentPropsWithRef<typeof Button>) {
-//   return (
-//     <form
-//       action={async () => {
-//         "use server"
-//         await signOut()
-//       }}
-//       className="w-full"
-//     >
-//       <Button variant="ghost" className="w-full p-0" {...props}>
-//         Sign Out
-//       </Button>
-//     </form>
-//   )
-// }
-// export function SignOut(props: React.ComponentPropsWithRef<typeof Button>) {
-//   return (
-//     <form action="/api/auth/signout" method="POST" className="w-full">
-//       <Button type="submit" variant="ghost" className="w-full p-0" {...props}>
-//         Sign Out
-//       </Button>
-//     </form>
-//   );
   export function SignOut(props: React.ComponentPropsWithRef<typeof Button>) {
     const handleSignOut = async () => {
       await signOut({ redirect: false }) // Prevents automatic redirection after sign out

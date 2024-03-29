@@ -1,4 +1,3 @@
-// Some React component
 import SpotifyUserAPI from "@/SpotifyUserAPI";
 import Track from "@/Track";
 import { signIn, signOut, useSession } from "next-auth/react";

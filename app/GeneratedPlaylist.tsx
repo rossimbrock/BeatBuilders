@@ -10,17 +10,7 @@ interface GeneratedPlaylistProps {
     setTracks: Dispatch<SetStateAction<Track[]>>;
 }
 
-// const SongCard: React.FC<SongCardProps> = ({ track, addSongToList }) => {
 const GeneratedPlaylist: React.FC<GeneratedPlaylistProps> = ({ tracks, setTracks }) => {
-// export default function GeneratedPlaylist() {
-
-    // let tracks = new Tracks()
-    // Tracks.addTrack(new Track("spotify:track:7GCaZax7ExKSNYFv8eQCvL", "Goofy Goover", "Spunch"))
-    // const [tracks, setTracks] = useState(Tracks.list);
-
-    // useEffect(() => {
-    //     setTracks(Tracks.list);
-    // }, [Tracks.list])
 
     return (
         <>
