@@ -1,13 +1,14 @@
 import { FavoriteFilled, ThumbsDownFilled } from "@carbon/icons-react";
 import React, { useState, useEffect, useRef } from 'react';
 import pullSongInfo from "./pullSongInfo";
+import Track from "@/Track";
 
 interface SongCardProps {
-    songTitle: string;
-    songArtist: string;
+    track: Track;
+    addSongToList: (track: Track) => void;
 }
 
-const SongCard: React.FC<SongCardProps> = ({ songTitle, songArtist }) => {
+const SongCard: React.FC<SongCardProps> = ({ track, addSongToList }) => {
     const [coverUrl, setCoverUrl] = useState<string>('');
     const [previewUrl, setPreviewUrl] = useState<string>('');
     const [showUnavailableMessage, setShowUnavailableMessage] = useState<boolean>(false);
@@ -15,7 +16,7 @@ const SongCard: React.FC<SongCardProps> = ({ songTitle, songArtist }) => {
 
     useEffect(() => {
         const pullInfo = async () => {
-            const result = await pullSongInfo(songTitle, songArtist);
+            const result = await pullSongInfo(track.title, track.artist);
             if (result) {
                 setCoverUrl(result.coverUrl || '');
                 setPreviewUrl(result.previewUrl || '');
@@ -23,7 +24,7 @@ const SongCard: React.FC<SongCardProps> = ({ songTitle, songArtist }) => {
         };
 
         pullInfo();
-    }, [songTitle, songArtist]);
+    }, [track.title, track.artist]);
 
     const handlePlayPause = () => {
         // If there's no preview URL, show the unavailable message and return
@@ -64,13 +65,13 @@ const SongCard: React.FC<SongCardProps> = ({ songTitle, songArtist }) => {
                 )}
             </div>
             <div style={{ textAlign: 'left', paddingTop: '0' }}>
-                <p className="text-2xl font-semibold" style={{ textTransform: 'capitalize', margin: '10px 0 0' }}>{songTitle}</p>
-                <p className="font-extralight font-lg" style={{ textTransform: 'capitalize', margin: '0' }}>{songArtist}</p>
+                <p className="text-2xl font-semibold" style={{ textTransform: 'capitalize', margin: '10px 0 0' }}>{track.title}</p>
+                <p className="font-extralight font-lg" style={{ textTransform: 'capitalize', margin: '0' }}>{track.artist}</p>
             </div>
         </div>
         <div className="flex justify-center pt-8">
-            <button className="pr-8 hover:scale-125">
-                <FavoriteFilled size={32} color="white"/>
+            <button className="pr-8 hover:scale-125" onClick={() => addSongToList(track)}>
+                <FavoriteFilled size={32} color="white" />
             </button>
             <button className="hover:scale-125">
                 <ThumbsDownFilled size={32} color="white" />
