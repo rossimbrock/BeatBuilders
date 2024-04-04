@@ -12,10 +12,17 @@
     "@carbon/icons-react": "^11.34.1",
     "@elastic/elasticsearch": "^8.12.1",
     "axios": "^1.6.7",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.0",
     "firebase": "^10.7.2",
-    "next": "14.1.0",
+    "lucide-react": "^0.334.0",
+    "next": "^14.1.0",
+    "next-auth": "^5.0.0-beta.9",
+    "radix-ui": "^1.0.1",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "spotify-web-api-node": "^5.0.2",
+    "tailwind-merge": "^2.2.1"
   },
   "devDependencies": {
     "@types/node": "^20",
