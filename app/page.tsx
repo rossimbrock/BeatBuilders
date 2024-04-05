@@ -51,17 +51,10 @@ export default function Home({ Component, pageProps }: AppProps) {
       saveSelectionToLocal([...prevChosenSongList, track]);
       return [...prevChosenSongList, track]}
     )
-    // if (track === songCardOne){
-    //   setSongCardOne(songQueue[0])
-    // } else {
-    //   setSongCardTwo(songQueue[0])
-    // }
-    // setSongQueue(prevQueue => prevQueue.slice(1));
     switchTrackOut(track);
   }
 
  const switchTrackOut = (track: Track) =>  {
-    // setSongQueue(prevQueue => prevQueue.slice(1))
     if (track === songCardOne){
       setSongCardOne(songQueue[0])
     } else {
