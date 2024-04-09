@@ -60,7 +60,49 @@ examples = [
     }}
   }}
 }}
-"""} 
+"""},
+ {"question": "Give me some songs about swimming across the Atlantic Ocean", "query": """
+{{
+  "size": 30,
+  "query": {{
+    "bool": {{
+      "must": [
+        {{"range": {{"acousticness": {{"gte": 0.8, "lte": 0.9}}}}}},
+        {{"range": {{"energy": {{"gte": 0.5", "lte": 0.6}}}}}},
+        {{"range": {{"romantic": {{"gte": 0.6, "lte": 0.7}}}}}},
+        {{"range": {{"feelings": {{"gte": 0.8, "lte": 0.9}}}}}},
+        {{"range": {{"loudness": {{"gte": 0.2, "lte": 0.4}}}}}}
+      ]
+    }}
+  }}
+}}
+"""},
+    {"question": "I want to feel like I'm traveling through space", "query": """
+{{
+  "size": 30,
+  "query": {{
+    "bool": {{
+      "must": [
+        {{"range": {{"acousticness": {{"gte": 0.7, "lte": 0.8}}}}}},
+        {{"range": {{"energy": {{"gte": 0.1", "lte": 0.3}}}}}},
+        {{"range": {{"instrumentalness": {{"gte": 0.7, "lte": 0.8}}}}}}
+      ]
+    }}
+  }}
+}}
+"""},
+    {"question": "Give me a playlist with songs from Taylor Swift", "query": """
+{{
+  "size": 30,
+  "query": {{
+    "bool": {{
+      "must": 
+        {{"match": {{"artist_name": "taylor swift"}}}}
+      
+    }}
+  }}
+}}
+"""}
 ]
 
 example_template = """
