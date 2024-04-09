@@ -9,6 +9,8 @@ export async function saveUserPlaylistSong(song: Track, email: string | null) {
     const month = months[currentDate.getMonth()];
     const day = currentDate.getDate();
     const year = currentDate.getFullYear();
+    console.log(email)
+    console.log(song.title);
     await setDoc(doc(db, `/users/${email}/songs`, song.id),{
         "spotify_id": song.id,
         "song_title": song.title, 
@@ -18,8 +20,10 @@ export async function saveUserPlaylistSong(song: Track, email: string | null) {
 
 } 
 
-export async function deleteUserPlaylistSong (song: Track) { 
-    
+export async function deleteUserPlaylistSong (song: Track, email: string | null) {
+    console.log(email)
+    console.log(song.title) 
+    await deleteDoc(doc(db, `/users/${email}/songs`, song.id));
 }
 
 export async function addToUsersCollection(email: string, username: string) { 

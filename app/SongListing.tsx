@@ -2,6 +2,7 @@ import { Subtract } from "@carbon/icons-react";
 import Track from '@/Track.js';
 import { integer } from "@elastic/elasticsearch/lib/api/types";
 import { Dispatch, SetStateAction } from "react";
+import { deleteUserPlaylistSong } from "@/firebase/firestoreUtils"
 
 interface SongListingProps {
     number: integer;
@@ -12,6 +13,7 @@ interface SongListingProps {
 const SongListing: React.FC<SongListingProps> = ({number, track, setTracks}) => { 
 
     const removeTrack = () => {
+        deleteUserPlaylistSong(track, sessionStorage.getItem("email"));
         setTracks((tracks) => {
             let newTracks = tracks.filter(trk => trk !== track);
             const serializedSelection = JSON.stringify(newTracks);
@@ -28,7 +30,7 @@ const SongListing: React.FC<SongListingProps> = ({number, track, setTracks}) => 
             <td> {track.artist} </td>
             <td> {"TODO"}</td>
             <td className="pl-14 hover:scale-125">
-                 <Subtract size={24} color = "rgb(216 180 254)" onClick={removeTrack}/>
+                <Subtract size={24} color = "rgb(216 180 254)" onClick={removeTrack}/>
             </td>
         </tr>
     );

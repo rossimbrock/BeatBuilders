@@ -33,6 +33,7 @@ export default function LoginPage() {
             .then((userCredential) => {
                 const user = userCredential.user;
                 console.log(user);
+                sessionStorage.setItem("email", formData.email);
                 router.push("/")
             })
             .catch((error) => {

@@ -73,6 +73,7 @@ const SongCard: React.FC<SongCardProps> = ({ track, addSongToList }) => {
         <div className="flex justify-center pt-8">
             <button className="pr-8 hover:scale-125" onClick={() =>  {
                 addSongToList(track);
+                console.log(sessionStorage.getItem("email"));
                 saveUserPlaylistSong(track, sessionStorage.getItem("email"));
             }}>
                 <FavoriteFilled size={32} color="white" />
