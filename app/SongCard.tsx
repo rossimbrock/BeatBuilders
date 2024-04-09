@@ -2,6 +2,7 @@ import { FavoriteFilled, ThumbsDownFilled } from "@carbon/icons-react";
 import React, { useState, useEffect, useRef } from 'react';
 import pullSongInfo from "./pullSongInfo";
 import Track from "@/Track";
+import { saveUserPlaylistSong } from "@/firebase/firestoreUtils";
 
 interface SongCardProps {
     track: Track;
@@ -70,7 +71,10 @@ const SongCard: React.FC<SongCardProps> = ({ track, addSongToList }) => {
             </div>
         </div>
         <div className="flex justify-center pt-8">
-            <button className="pr-8 hover:scale-125" onClick={() => addSongToList(track)}>
+            <button className="pr-8 hover:scale-125" onClick={() =>  {
+                addSongToList(track);
+                saveUserPlaylistSong(track, sessionStorage.getItem("email"));
+            }}>
                 <FavoriteFilled size={32} color="white" />
             </button>
             <button className="hover:scale-125">

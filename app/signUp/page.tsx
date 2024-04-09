@@ -5,7 +5,8 @@ import Link from "next/link";
 import { useState } from "react";
 import { signUpFormValidation, checkForErrors } from "../authValidation";
 import { InformationFilled } from "@carbon/icons-react";
-import { useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation';
+import { addToUsersCollection } from "@/firebase/firestoreUtils";
 
 export default function SignUpPage() { 
     const router = useRouter();
@@ -36,8 +37,9 @@ export default function SignUpPage() {
             .then((userCredential) => {
                 // Signed up 
                 const user = userCredential.user;
-                console.log(user.email);
-                router.push("/")
+                addToUsersCollection(formData.email, formData.username);
+                sessionStorage.setItem('email', formData.email);
+                router.push("/");
             })
             .catch((error) => {
                 setGoogleErrorInfo("Account already exists");

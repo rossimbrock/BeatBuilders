@@ -11,7 +11,8 @@ import type { AppProps } from 'next/app';
 import Track from "@/Track";
 
 export default function Home({ Component, pageProps }: AppProps) {
-
+  const email = sessionStorage.getItem("email");
+  console.log(email);
   const [songQueue, setSongQueue] = useState([
     new Track("spotify:track:623rRTKwGmgjH6sjE9uWLh", "Scatman (ski-ba-bop-ba-dop-bop)", "Scatman John"),
     new Track("spotify:track:67WTwafOMgegV6ABnBQxcE", "Some Nights", "fun."),
