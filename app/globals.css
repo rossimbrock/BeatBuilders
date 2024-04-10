@@ -35,6 +35,10 @@ div.songUnavailable {
   border-radius: 8px;
 }
 
+.blur {
+  filter: blur(4px);
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;
