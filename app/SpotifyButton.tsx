@@ -3,16 +3,27 @@ import Track from "@/Track";
 import { signIn, signOut, useSession } from "next-auth/react";
 
 interface SpotifyButtonProps {
-  setCreatePlaylistClicked: (createPlaylistClicked: boolean) => void;
+  tracks: Track[]
+  setTracks: (tracks: Track[]) => void;
 }
 
-const SpotifyButton: React.FC<SpotifyButtonProps> = ({ setCreatePlaylistClicked }) => {
+const SpotifyButton: React.FC<SpotifyButtonProps> = ({ tracks, setTracks }) => {
   const { data: session } = useSession();
+
+  const handleCreatePlaylistClick = () => {
+    if (session){
+      // initialize API, set token
+      let SpotifyUserApi = new SpotifyUserAPI(session.user.access_token);
+      SpotifyUserAPI.createPlaylistFromSongList(Track.getTrackListIds(tracks));
+      localStorage.clear();
+      setTracks([]);
+    }
+  }
 
   if (session) {
     return (
       <div>
-        <button onClick={() => setCreatePlaylistClicked(true)}>
+        <button onClick={handleCreatePlaylistClick}>
           Add Playlist To Spotify
         </button>
         {"   |   "}

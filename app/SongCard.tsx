@@ -6,10 +6,9 @@ import Track from "@/Track";
 interface SongCardProps {
     track: Track;
     addSongToList: (track: Track) => void;
-    switchSongs: (track: Track) => void; 
 }
 
-const SongCard: React.FC<SongCardProps> = ({ track, addSongToList, switchSongs }) => {
+const SongCard: React.FC<SongCardProps> = ({ track, addSongToList }) => {
     const [coverUrl, setCoverUrl] = useState<string>('');
     const [previewUrl, setPreviewUrl] = useState<string>('');
     const [showUnavailableMessage, setShowUnavailableMessage] = useState<boolean>(false);
@@ -74,7 +73,7 @@ const SongCard: React.FC<SongCardProps> = ({ track, addSongToList, switchSongs }
             <button className="pr-8 hover:scale-125" onClick={() => addSongToList(track)}>
                 <FavoriteFilled size={32} color="white" />
             </button>
-            <button className="hover:scale-125" onClick={() => switchSongs(track)}>
+            <button className="hover:scale-125">
                 <ThumbsDownFilled size={32} color="white" />
             </button>
         </div>

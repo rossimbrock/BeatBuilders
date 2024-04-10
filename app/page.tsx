@@ -51,10 +51,6 @@ export default function Home({ Component, pageProps }: AppProps) {
       saveSelectionToLocal([...prevChosenSongList, track]);
       return [...prevChosenSongList, track]}
     )
-    switchTrackOut(track);
-  }
-
- const switchTrackOut = (track: Track) =>  {
     if (track === songCardOne){
       setSongCardOne(songQueue[0])
     } else {
@@ -101,10 +97,10 @@ export default function Home({ Component, pageProps }: AppProps) {
       </div> 
       <div className="flex justify-center pb-24"> 
         <div className="w-2/5 flex justify-end pr-4 "> 
-              <SongCard track={songCardOne} addSongToList={addSongToChosenList} switchSongs={switchTrackOut}/>
+              <SongCard track={songCardOne} addSongToList={addSongToChosenList} />
         </div>
         <div className = "w-2/5 flex justify-start pl-4">
-              <SongCard track={songCardTwo} addSongToList={addSongToChosenList} switchSongs={switchTrackOut}/>
+              <SongCard track={songCardTwo} addSongToList={addSongToChosenList}/>
           </div>
         </div>
         <GeneratedPlaylist tracks={chosenSongList} setTracks={setChosenSongList}/>

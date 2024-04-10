@@ -14,8 +14,8 @@ export default class SpotifyUserAPI {
       SpotifyUserAPI.spotifyApi.setAccessToken(token);
     }
 
-    static createPlaylistFromSongList(tracks, playListName){
-      SpotifyUserAPI.spotifyApi.createPlaylist(playListName, { 'description': 'My description', 'public': false })
+    static createPlaylistFromSongList(tracks){
+      SpotifyUserAPI.spotifyApi.createPlaylist('HarmonyHub Playlist', { 'description': 'My description', 'public': false })
             .then(function(data) {
               SpotifyUserAPI.spotifyApi.addTracksToPlaylist(data.body.id, tracks);
             })
