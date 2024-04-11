@@ -9,6 +9,7 @@ import GeneratedPlaylist from "./GeneratedPlaylist";
 import { SessionProvider } from "next-auth/react";
 import type { AppProps } from 'next/app';
 import Track from "@/Track";
+import { retrieveUserPlaylist } from "@/firebase/firestoreUtils";
 
 export default function Home({ Component, pageProps }: AppProps) {
   const email = sessionStorage.getItem("email");
@@ -71,6 +72,7 @@ export default function Home({ Component, pageProps }: AppProps) {
     if (serializedSelections) {
         setChosenSongList(JSON.parse(serializedSelections));
     }
+    setChosenSongList(retrieveUserPlaylist(sessionStorage.getItem("email")));
   }, []);
 
   return (
