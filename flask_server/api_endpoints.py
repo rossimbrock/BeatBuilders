@@ -2,7 +2,7 @@
 from flask import Flask,request, jsonify
 from flask_cors import CORS
 from elasticsearch import Elasticsearch
-from LLama.gemini_generator import generate_response
+from LLama.gemini_generator import generate_response, es_to_spotify
 import traceback
 from werkzeug.exceptions import HTTPException
 import requests
@@ -39,15 +39,18 @@ def process_search_data():
     response = es.search(index="songs", body=es_query)
     hits = response['hits']['hits']
     songs_returned = [hit['_source'] for hit in hits]
+    spotify_output = [es_to_spotify(song) for song in songs_returned]
 
     # print(f"Songs found: {songs_returned}")
 
+    print("Spotify Output: ", spotify_output)
 
     save_search_query(search_query)
     return jsonify({
         "user_query": search_query,
         "es_query": es_query,
-        "songs_returned": songs_returned
+        "songs_returned": songs_returned,
+        "spotify_output": spotify_output
     })
 
 def save_search_query(search_query): 
