@@ -28,7 +28,7 @@ const SongListing: React.FC<SongListingProps> = ({number, track, setTracks}) => 
             <td> {number}  </td>
             <td> {track.title} </td>
             <td> {track.artist} </td>
-            <td> {"TODO"}</td>
+            <td> {track.date_added}</td>
             <td className="pl-14 hover:scale-125">
                 <Subtract size={24} color = "rgb(216 180 254)" onClick={removeTrack}/>
             </td>

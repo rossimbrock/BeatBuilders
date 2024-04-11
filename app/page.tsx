@@ -68,11 +68,18 @@ export default function Home({ Component, pageProps }: AppProps) {
   };
 
   useEffect(() => {
+    const fetchData = async () => {
+        const playlist = await retrieveUserPlaylist(sessionStorage.getItem("email"));
+        console.log(playlist)
+        setChosenSongList(playlist);
+    };
+
+    fetchData();
+
     const serializedSelections = localStorage.getItem('userSelections');
     if (serializedSelections) {
         setChosenSongList(JSON.parse(serializedSelections));
     }
-    setChosenSongList(retrieveUserPlaylist(sessionStorage.getItem("email")));
   }, []);
 
   return (
