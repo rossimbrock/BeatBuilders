@@ -6,17 +6,16 @@ import json
 def es_to_spotify(esResult):
         
     #API access
-    client_id = "d89adefdd65649179d78f7f8be8f54ba"
-    client_secret = "7daa071f5b7a4d7894ec8155123b451b"
+    client_id = ""
+    client_secret = ""
 
     #Create Spotify object
     sp = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials(client_id=client_id, client_secret=client_secret))
 
-
     #Use elements from response for Spotify query
-    es_artist_name = esResult['artist_name']
-    es_track_name = esResult['track_name']
-    es_release_date = esResult['release_date']
+    es_artist_name = esResult['hits']['hits'][0]['_source']['artist_name']
+    es_track_name = esResult['hits']['hits'][0]['_source']['track_name']
+    es_release_date = esResult['hits']['hits'][0]['_source']['release_date']
 
     #Query Spotify for track information
     query = f"artist:{es_artist_name} track:{es_track_name} year:{es_release_date}"
@@ -46,5 +45,5 @@ def es_to_spotify(esResult):
 
     spotify_json = json.dumps(spotify_dict)
 
-    #print(spotify_json)
+    print(spotify_json)
     return spotify_json
