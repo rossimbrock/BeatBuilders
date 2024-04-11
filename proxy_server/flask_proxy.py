@@ -1,8 +1,6 @@
 
 from flask import Flask,request, jsonify
 from flask_cors import CORS
-from elasticsearch import Elasticsearch
-from LLama.gemini_generator import generate_response
 import traceback
 from werkzeug.exceptions import HTTPException
 import requests
@@ -10,8 +8,6 @@ import requests
 
 app = Flask(__name__)
 CORS(app)
-
-es = Elasticsearch("http://elasticsearch:9200")
 
 # Error handler
 @app.errorhandler(Exception)
@@ -25,34 +21,30 @@ def handle_exception(e):
 
 user_search_query = ""  
 
-@app.route('/searchQuery', methods = ['POST'])
+@app.route('/flaskProxy', methods = ['POST'])
 def process_search_data(): 
     data = request.get_json()
     search_query = data['search_data']
-    # print(f"Search query: {search_query}")
-
-    # Genereate Elasticsearch query using Gemini generator
-    es_query = generate_response(search_query)
-    # print(f"Elasticsearch query: {es_query}") 
-
-    # run query on database, convert hits to list of source documents
-    response = es.search(index="songs", body=es_query)
-    hits = response['hits']['hits']
-    songs_returned = [hit['_source'] for hit in hits]
-
-    # print(f"Songs found: {songs_returned}")
-
-
     save_search_query(search_query)
     return jsonify({
         "user_query": search_query,
-        "es_query": es_query,
-        "songs_returned": songs_returned
     })
 
 def save_search_query(search_query): 
     global user_search_query
     user_search_query = search_query
+
+def query_deezer_api(search_query):
+    url = "https://api.deezer.com/search"
+    params = {'q': search_query}
+    try:
+        response = requests.get(url, params=params)
+        if response.status_code == 200:
+            return jsonify(response.json())
+        else:
+            return jsonify({'error': 'Failed to get data from Deezer API', 'status_code': response.status_code}), response.status_code
+    except requests.RequestException as e:
+        return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
     app.run()
