@@ -43,8 +43,6 @@ def process_search_data():
 
     # print(f"Songs found: {songs_returned}")
 
-    print("Spotify Output: ", spotify_output)
-
     save_search_query(search_query)
     return jsonify({
         "user_query": search_query,
