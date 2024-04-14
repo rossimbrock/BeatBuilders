@@ -7,55 +7,75 @@ import json
 GOOGLE_API_KEY="AIzaSyAB1MXhSKFdoCgybzwo5OaykMmxtr_yhMM"
 
 examples = [
-    {"question": "I want a song that makes me feel like I'm walking through the forest at midnight", "query": """
+    {"question": "I'm looking for a Math Rock song with intricate guitar work.", "query": """
 {{
-  "size": 30,
+  "size": 10, 
   "query": {{
     "bool": {{
       "must": [
-        {{"range": {{"acousticness": {{"gte": 0.5}}}}}},
-        {{"range": {{"energy": {{"lte": 0.3}}}}}},
-        {{"range": {{"instrumentalness": {{"gte": 0.7}}}}}}
+        {{"range": {{"valence": {{"gte": 0.6, "lte": 0.8}}}}}},
+        {{"range": {{"danceability": {{"gte": 0.6, "lte": 0.8}}}}}},
+        {{"range": {{"energy": {{"gte": 0.6, "lte": 0.8}}}}}},
+        {{"range": {{"acousticness": {{"gte": 0.1, "lte": 0.3}}}}}},
+        {{"range": {{"instrumentalness": {{"gte": 0, "lte": 0.1}}}}}}
       ]
     }}
   }}
 }}
 """},  
-    {"question": "I want a song that sounds like a rainy day.", "query": """
+    {"question": "I’m looking for a song that embodies the warmth and comfort of returning home.", "query": """
 {{
-  "size": 30,
+  "size": 10,
   "query": {{
     "bool": {{
       "must": [
-        {{"range": {{"acousticness": {{"gte": 0.5}}}}}},
-        {{"range": {{"energy": {{"lte": 0.3}}}}}},
-        {{"range": {{"instrumentalness": {{"gte": 0.7}}}}}}
+        {{"range": {{"valence": {{"gte": 0.8, "lte": 1.0}}}}}},
+        {{"range": {{"energy": {{"gte": 0.6, "lte": 0.8}}}}}},
+        {{"range": {{"danceability": {{"gte": 0.7, "lte": 0.9}}}}}},
+        {{"range": {{"acousticness": {{"gte": 0.1, "lte": 0.3}}}}}}
       ]
     }}
   }}
 }}
 """},  
-    {"question": "Give me a track that's perfect for a road trip under the stars.", "query": """
+    {"question": "I’m looking for a song that uses a city's name in its lyrics.", "query": """
 {{
-  "size": 30,
+  "size": 10,
   "query": {{
-    "bool": {{
-      "must": [
-        {{"range": {{"energy": {{"gte": 0.5}}}}}},
-        {{"range": {{"valence": {{"gte": 0.5}}}}}},
-        {{"range": {{"danceability": {{"gte": 0.5}}}}}}
-      ]
+    "match": {{
+      "lyrics": {{
+        "query": "New York Paris London",
+        "operator": "or"
+      }}
     }}
   }}
 }}
-"""},
-    {"question": "I need a powerful motivational speech", "query": """
+"""},  
+    {"question": "Find a song that's inspired by a book or a movie.", "query": """
 {{
-  "size": 30,
+  "size": 10,
+  "query": {{
+    "bool": {{
+      "should": [
+        {{"match": {{"lyrics": "Harry Potter"}}}},
+        {{"match": {{"lyrics": "Lord of the Rings"}}}}
+      ],
+      "minimum_should_match": 1
+    }}
+  }}
+}}
+"""},  
+    {"question": "Find me a track that feels like the first chill of winter.", "query": """
+{{
+  "size": 10, 
   "query": {{
     "bool": {{
       "must": [
-        {{"range": {{"speechiness": {{"gte": 0.66}}}}}}
+        {{"range": {{"valence": {{"gte": 0.1, "lte": 0.3}}}}}},
+        {{"range": {{"danceability": {{"gte": 0.2, "lte": 0.4}}}}}},
+        {{"range": {{"energy": {{"gte": 0.9, "lte": 1}}}}}},
+        {{"range": {{"acousticness": {{"gte": 0.6, "lte": 0.8}}}}}},
+        {{"range": {{"instrumentalness": {{"gte": 0, "lte": 0.1}}}}}}
       ]
     }}
   }}
@@ -74,21 +94,17 @@ example_prompt = PromptTemplate(
 )
 
 prefix="""
-The Spotify database allows searching by Acousticness, Danceability, Energy, Instrumentalness, Liveness, Popularity, Speechiness, Time Signature, and Valence. Use these columns to construct your queries.
+The Spotify database allows searching by artist_name, track_name, lyrics, acousticness, danceability, energy, instrumentalness, and valence (happiness). Use these columns to construct your queries.
 
 Given an input question, create a syntactically correct Elasticsearch query that maps the prompt to the columns of the Spotify database. Unless the user specifies a specific number of examples in their question, limit the query to at most 30 results and only use term instead of match.
-
 
 "accousticness": Probablilty that the prompt is an acoustic song, [0.0, 1.0].
 "danceability": How likely the prompt wants to dance to the music, [0.0, 1.0].
 "energy": How energetic the song is, [0.0, 1.0].
 "instrumentalness": Predict if the prompted track has no vocals. 0 being completely spoken and 1 being no vocals, [0.0, 1.0].
 "liveness": How likely the song is performed live, [0.0, 1.0].
-"loudness": How loud the song the prompt is describing is in decibels, [-60,0]db.
-"speechiness": How much talking should be in the song described from the prompt. <0.33 tracks that are non-speech like, [0.33- 0.66: contains music and speech, >0.66: made entirely of spoken words].
-"time_signature": The estimated time signature of the prompt, [3, 7](indicating time signatures of "3/4", to "7/4").
+"loudness": How loud the song the prompt is describing is in decibels, [0,1].
 "valence": How happy or sad the song sounds, [0.0, 1.0].
-
 
 Only query for the few relevant columns given the question. The query should be a valid JSON object.
 """
