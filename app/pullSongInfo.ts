@@ -49,6 +49,7 @@ const pullSongInfo = async (songTitle: string, songArtist: string) => {
         const image640x640 = albumImages?.find((image: { height: number; width: number; }) => image.height === 640 && image.width === 640);
         const trackWithPreview = response.data.tracks.items.find((item: any) => item.preview_url !== null);
         let previewUrl = trackWithPreview?.preview_url;
+        let spotifyId = trackWithPreview?.uri;
         // Use Deezer API if Spotify doesn't work
         if (!previewUrl) {
             // URL of your Flask server's endpoint
@@ -73,7 +74,8 @@ const pullSongInfo = async (songTitle: string, songArtist: string) => {
 
         return {
             coverUrl: image640x640?.url,
-            previewUrl: previewUrl
+            previewUrl: previewUrl,
+            spotifyId: spotifyId
         };
 
     } catch (error) {

@@ -15,6 +15,8 @@ export async function saveUserPlaylistSong(song: Track, email: string | null) {
         "spotify_id": song.id,
         "song_title": song.title, 
         "song_artists": song.artist,
+        "image_link": song.imageLink,
+        "preview_link": song.previewLink, 
         "date_added": `${month} ${day}, ${year}`
     },{ merge: true })
 
@@ -31,7 +33,8 @@ export async function retrieveUserPlaylist (email: string | null) {
     const songs = await getDocs(collection(db, `/users/${email}/songs`));
     songs.forEach((song: any) => {
         let songData = song.data()
-        songList.push(new Track(songData.spotify_id, songData.song_title, songData.song_artists, songData.date_added));
+        console.log(songData.date_added);
+        songList.push(new Track(songData.spotify_id, songData.song_title, songData.song_artists, songData.image_link, songData.preview_link, songData.date_added));
     })
 
     return songList;

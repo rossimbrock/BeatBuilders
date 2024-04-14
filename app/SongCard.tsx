@@ -7,9 +7,10 @@ import { saveUserPlaylistSong } from "@/firebase/firestoreUtils";
 interface SongCardProps {
     track: Track;
     addSongToList: (track: Track) => void;
+    switchSongs: (track: Track) => void; 
 }
 
-const SongCard: React.FC<SongCardProps> = ({ track, addSongToList }) => {
+const SongCard: React.FC<SongCardProps> = ({ track, addSongToList, switchSongs }) => {
     const [coverUrl, setCoverUrl] = useState<string>('');
     const [previewUrl, setPreviewUrl] = useState<string>('');
     const [showUnavailableMessage, setShowUnavailableMessage] = useState<boolean>(false);
@@ -78,7 +79,7 @@ const SongCard: React.FC<SongCardProps> = ({ track, addSongToList }) => {
             }}>
                 <FavoriteFilled size={32} color="white" />
             </button>
-            <button className="hover:scale-125">
+            <button className="hover:scale-125" onClick={() => switchSongs(track)}>
                 <ThumbsDownFilled size={32} color="white" />
             </button>
         </div>
