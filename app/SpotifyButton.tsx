@@ -25,7 +25,7 @@ const SpotifyButton: React.FC<SpotifyButtonProps> = ({ setCreatePlaylistClicked 
   }
 
   return (
-    <button onClick={() => signIn('spotify')}>Log in with Spotify</button>
+    <button onClick={() => signIn('spotify')} className="border-2 border-purple-300 rounded-xl px-4 py-2 hover:scale-110">Log in with Spotify</button>
   );
 }
 
