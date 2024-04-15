@@ -18,7 +18,6 @@ export async function sendSearchQueryData(searchData, setSongQueue, updateSongsF
             return;
           }
         const tracks = [];
-
         for (const song of data.songs_returned) {
             const result = await pullSongInfo(song.track_name, song.artist_name);
             if (result) {

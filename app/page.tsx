@@ -9,6 +9,7 @@ import GeneratedPlaylist from "./GeneratedPlaylist";
 import { SessionProvider } from "next-auth/react";
 import type { AppProps } from 'next/app';
 import Track from "@/Track";
+import { retrieveUserPlaylist } from "@/firebase/firestoreUtils";
 
 export default function Home({ Component, pageProps }: AppProps) {
 
@@ -25,6 +26,7 @@ export default function Home({ Component, pageProps }: AppProps) {
   
   const logOut = async() => { 
     signOut(auth).then(() => {
+      localStorage.clear();
       console.log("Successful log out");
     }).catch((error) => {
       console.log("Error in log out");
@@ -54,6 +56,13 @@ export default function Home({ Component, pageProps }: AppProps) {
   };
 
   useEffect(() => {
+    const fetchData = async () => {
+        const playlist = await retrieveUserPlaylist(sessionStorage.getItem("email"));
+        setChosenSongList(playlist);
+    };
+
+    fetchData();
+
     const serializedSelections = localStorage.getItem('userSelections');
     if (serializedSelections) {
         setChosenSongList(JSON.parse(serializedSelections));
