@@ -1,7 +1,10 @@
-import { FavoriteFilled, ThumbsDownFilled } from "@carbon/icons-react";
+import { CarbonForSalesforce, FavoriteFilled, ThumbsDownFilled } from "@carbon/icons-react";
 import React, { useState, useEffect, useRef } from 'react';
 import pullSongInfo from "./pullSongInfo";
 import Track from "@/Track";
+import "./visualizerStyle.css"
+import { DebugLogger } from "util";
+import { log } from "console";
 
 interface SongCardProps {
     track: Track;
@@ -14,6 +17,8 @@ const SongCard: React.FC<SongCardProps> = ({ track, addSongToList, switchSongs }
     const [previewUrl, setPreviewUrl] = useState<string>('');
     const [showUnavailableMessage, setShowUnavailableMessage] = useState<boolean>(false);
     const audioPlayerRef = useRef<HTMLAudioElement>(null);
+    const canvasRef = useRef<HTMLCanvasElement>(null);
+    const animationIdRef = useRef<number | null>(null);
 
     useEffect(() => {
         const pullInfo = async () => {
@@ -25,7 +30,65 @@ const SongCard: React.FC<SongCardProps> = ({ track, addSongToList, switchSongs }
         };
 
         pullInfo();
+        
+
     }, [track.title, track.artist]);
+
+
+    const handleVisualizer = () =>{
+        const audioContext = new AudioContext();
+        const audioElement = audioPlayerRef.current!//new Audio("https://p.scdn.co/mp3-preview/288296130f65eeb315da5b8df98aaec22e1f0067?cid=0392115c84454df6b0aa1115841830af");
+        
+        if(audioElement==null){
+            console.log("No audio element!!!");
+            return;
+        }
+        const audioSource = audioContext.createMediaElementSource(audioElement);
+        const analyser = audioContext.createAnalyser();
+        audioSource.connect(analyser);
+        analyser.connect(audioContext.destination);
+
+        const canvas = canvasRef.current!;
+        if(!canvas)return;
+        const canvasCtx = canvas.getContext('2d')!;
+        
+        analyser.fftSize=32;
+        const bufferLength = analyser.frequencyBinCount;
+        const dataArray = new Uint8Array(bufferLength);
+
+        const draw = () => {
+            const WIDTH = canvas.width;
+            const HEIGHT = canvas.height;
+
+            analyser.getByteFrequencyData(dataArray);
+
+            canvasCtx.clearRect(0, 0, WIDTH, HEIGHT);
+            
+            const barWidth = (WIDTH / bufferLength);
+            let barHeight;
+            let x = 0;
+            canvasCtx.beginPath();
+            for (let i = 0; i < bufferLength; i++) {
+                barHeight = dataArray[i] / 2;
+
+                canvasCtx.fillStyle = `rgba(50,50,${barHeight + 50},0.7)`;
+                canvasCtx.roundRect(x, HEIGHT - barHeight / 2, barWidth, barHeight,6);
+                
+                x += barWidth + 1;
+                
+            }
+            canvasCtx.fill();
+
+            animationIdRef.current = requestAnimationFrame(draw);
+        };
+
+        draw();
+
+        return () => {
+            cancelAnimationFrame(animationIdRef.current!);
+        };
+    }
+
 
     const handlePlayPause = () => {
         // If there's no preview URL, show the unavailable message and return
@@ -51,8 +114,9 @@ const SongCard: React.FC<SongCardProps> = ({ track, addSongToList, switchSongs }
             } else {
                 audioPlayerRef.current.pause();
             }
+            handleVisualizer();
         }
-    };
+    }
 
     return (
     <div className="flex-col justify-center items-center mx-auto" style={{ width: '325px' }}>
@@ -63,12 +127,17 @@ const SongCard: React.FC<SongCardProps> = ({ track, addSongToList, switchSongs }
                     <div className='songUnavailable'>
                         Song Preview Unavailable
                     </div>
-                )}
+                )} 
+                <div className="visualizer">
+                    {previewUrl && <canvas ref={canvasRef} style={{width:'100%',height:'20%',cursor: 'pointer',borderRadius:'5px'}} onClick={handlePlayPause}/>}
+                </div>
             </div>
+            
             <div style={{ textAlign: 'left', paddingTop: '0' }}>
                 <p className="text-2xl font-semibold" style={{ textTransform: 'capitalize', margin: '10px 0 0' }}>{track.title}</p>
                 <p className="font-extralight font-lg" style={{ textTransform: 'capitalize', margin: '0' }}>{track.artist}</p>
             </div>
+            
         </div>
         <div className="flex justify-center pt-8">
             <button className="pr-8 hover:scale-125" onClick={() => addSongToList(track)}>
@@ -78,7 +147,8 @@ const SongCard: React.FC<SongCardProps> = ({ track, addSongToList, switchSongs }
                 <ThumbsDownFilled size={32} color="white" />
             </button>
         </div>
-        {previewUrl && <audio ref={audioPlayerRef} src={previewUrl} controls style={{ display: "none" }} />}
+        {previewUrl && <audio crossOrigin="anonymous" ref={audioPlayerRef} src={previewUrl} controls style={{ display: "none" }} />}
+
     </div>
     );
 };
