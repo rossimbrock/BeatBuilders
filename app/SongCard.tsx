@@ -2,9 +2,6 @@ import { CarbonForSalesforce, FavoriteFilled, ThumbsDownFilled } from "@carbon/i
 import React, { useState, useEffect, useRef } from 'react';
 import pullSongInfo from "./pullSongInfo";
 import Track from "@/Track";
-import "./visualizerStyle.css"
-import { DebugLogger } from "util";
-import { log } from "console";
 
 interface SongCardProps {
     track: Track;
@@ -37,12 +34,9 @@ const SongCard: React.FC<SongCardProps> = ({ track, addSongToList, switchSongs }
 
     const handleVisualizer = () =>{
         const audioContext = new AudioContext();
-        const audioElement = audioPlayerRef.current!//new Audio("https://p.scdn.co/mp3-preview/288296130f65eeb315da5b8df98aaec22e1f0067?cid=0392115c84454df6b0aa1115841830af");
+        const audioElement = audioPlayerRef.current!;
         
-        if(audioElement==null){
-            console.log("No audio element!!!");
-            return;
-        }
+        if(audioElement==null) return;
         const audioSource = audioContext.createMediaElementSource(audioElement);
         const analyser = audioContext.createAnalyser();
         audioSource.connect(analyser);
