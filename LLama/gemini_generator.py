@@ -13,11 +13,27 @@ examples = [
   "query": {{
     "bool": {{
       "must": [
-        {{"range": {{"valence": {{"gte": 0.6, "lte": 0.8}}}}}},
-        {{"range": {{"danceability": {{"gte": 0.6, "lte": 0.8}}}}}},
-        {{"range": {{"energy": {{"gte": 0.6, "lte": 0.8}}}}}},
-        {{"range": {{"acousticness": {{"gte": 0.1, "lte": 0.3}}}}}},
-        {{"range": {{"instrumentalness": {{"gte": 0, "lte": 0.1}}}}}}
+        {{"range": {{"dating": {{"gte": 0.0, "lte": 0.1}}}}}},
+        {{"range": {{"violence": {{"gte": 0.0, "lte": 0.1}}}}}},
+        {{"range": {{"world/life": {{"gte": 0.0, "lte": 0.2}}}}}},
+        {{"range": {{"night/time": {{"gte": 0.0, "lte": 0.1}}}}}},
+        {{"range": {{"shaketheaudience": {{"gte": 0, "lte": 0.1}}}}}},
+        {{"range": {{"family/gospel": {{"gte": 0, "lte": 0.1}}}}}},
+        {{"range": {{"romantic": {{"gte": 0, "lte": 0.1}}}}}},
+        {{"range": {{"communication": {{"gte": 0.0, "lte": 0.3}}}}}},
+        {{"range": {{"obscene": {{"gte": 0.0, "lte": 0.3}}}}}},
+        {{"range": {{"music": {{"gte": 0.0, "lte": 0.5}}}}}},
+        {{"range": {{"movement/places": {{"gte": 0.0, "lte": 0.4}}}}}},
+        {{"range": {{"light/visualperceptions": {{"gte": 0, "lte": 0.5}}}}}},
+        {{"range": {{"family/spiritual": {{"gte": 0, "lte": 0.1}}}}}},
+        {{"range": {{"sadness": {{"gte": 0.0, "lte": 0.2}}}}}},
+        {{"range": {{"feelings": {{"gte": 0.1, "lte": 0.3}}}}}},
+        {{"range": {{"danceability": {{"gte": 0.5, "lte": 0.8}}}}}},
+        {{"range": {{"loudness": {{"gte": 0.2, "lte": 0.4}}}}}},
+        {{"range": {{"acousticness": {{"gte": 0.4, "lte": 0.7}}}}}},
+        {{"range": {{"instrumentalness": {{"gte": 0.4, "lte": 0.7}}}}}},
+        {{"range": {{"valence": {{"gte": 0.3, "lte": 0.6}}}}}},
+        {{"range": {{"energy": {{"gte": 0.3, "lte": 0.7}}}}}}
       ]
     }}
   }}
