@@ -13,11 +13,23 @@ examples = [
   "query": {{
     "bool": {{
       "must": [
-        {{"range": {{"valence": {{"gte": 0.6, "lte": 0.8}}}}}},
-        {{"range": {{"danceability": {{"gte": 0.6, "lte": 0.8}}}}}},
-        {{"range": {{"energy": {{"gte": 0.6, "lte": 0.8}}}}}},
-        {{"range": {{"acousticness": {{"gte": 0.1, "lte": 0.3}}}}}},
-        {{"range": {{"instrumentalness": {{"gte": 0, "lte": 0.1}}}}}}
+        {{"range": {{"dating": {{"gte": 0.0, "lte": 0.1}}}}}},
+        {{"range": {{"violence": {{"gte": 0.0, "lte": 0.1}}}}}},
+        {{"range": {{"romantic": {{"gte": 0, "lte": 0.1}}}}}},
+        {{"range": {{"communication": {{"gte": 0.0, "lte": 0.3}}}}}},
+        {{"range": {{"obscene": {{"gte": 0.0, "lte": 0.3}}}}}},
+        {{"range": {{"music": {{"gte": 0.0, "lte": 0.5}}}}}},
+        {{"range": {{"movement/places": {{"gte": 0.0, "lte": 0.4}}}}}},
+        {{"range": {{"light/visualperceptions": {{"gte": 0, "lte": 0.5}}}}}},
+        {{"range": {{"family/spiritual": {{"gte": 0, "lte": 0.1}}}}}},
+        {{"range": {{"sadness": {{"gte": 0.0, "lte": 0.2}}}}}},
+        {{"range": {{"feelings": {{"gte": 0.1, "lte": 0.3}}}}}},
+        {{"range": {{"danceability": {{"gte": 0.5, "lte": 0.8}}}}}},
+        {{"range": {{"loudness": {{"gte": 0.2, "lte": 0.4}}}}}},
+        {{"range": {{"acousticness": {{"gte": 0.4, "lte": 0.7}}}}}},
+        {{"range": {{"instrumentalness": {{"gte": 0.4, "lte": 0.7}}}}}},
+        {{"range": {{"valence": {{"gte": 0.3, "lte": 0.6}}}}}},
+        {{"range": {{"energy": {{"gte": 0.3, "lte": 0.7}}}}}}
       ]
     }}
   }}
@@ -38,7 +50,7 @@ examples = [
   }}
 }}
 """},  
-    {"question": "I’m looking for a song that uses a city's name in its lyrics.", "query": """
+    {"question": "Im looking for a song that uses a city's name in its lyrics.", "query": """
 {{
   "size": 10,
   "query": {{
@@ -81,44 +93,23 @@ examples = [
   }}
 }}
 """},
- {"question": "Give me some songs about swimming across the Atlantic Ocean", "query": """
+    {"question": "Give me a song that makes me rethink my place with the world", "query": """
 {{
-  "size": 30,
+  "size": 10, 
   "query": {{
     "bool": {{
       "must": [
-        {{"range": {{"acousticness": {{"gte": 0.8, "lte": 0.9}}}}}},
-        {{"range": {{"energy": {{"gte": 0.5", "lte": 0.6}}}}}},
-        {{"range": {{"romantic": {{"gte": 0.6, "lte": 0.7}}}}}},
-        {{"range": {{"feelings": {{"gte": 0.8, "lte": 0.9}}}}}},
-        {{"range": {{"loudness": {{"gte": 0.2, "lte": 0.4}}}}}}
+        {{"range": {{"world/life": {{"gte": 0.5, "lte": 0.8}}}}}},
+        {{"range": {{"night/time": {{"gte": 0.0, "lte": 0.1}}}}}},
+        {{"range": {{"family/gospel": {{"gte": 0, "lte": 0.4}}}}}},
+        {{"range": {{"music": {{"gte": 0.0, "lte": 0.5}}}}}},
+        {{"range": {{"movement/places": {{"gte": 0.0, "lte": 0.4}}}}}},
+        {{"range": {{"light/visualperceptions": {{"gte": 0.3, "lte": 0.6}}}}}},
+        {{"range": {{"family/spiritual": {{"gte": 0.3, "lte": 0.8}}}}}},
+        {{"range": {{"feelings": {{"gte": 0.4, "lte": 0.7}}}}}},
+        {{"range": {{"instrumentalness": {{"gte": 0.4, "lte": 0.7}}}}}},
+        {{"range": {{"valence": {{"gte": 0.5, "lte": 0.9}}}}}}
       ]
-    }}
-  }}
-}}
-"""},
-    {"question": "I want to feel like I'm traveling through space", "query": """
-{{
-  "size": 30,
-  "query": {{
-    "bool": {{
-      "must": [
-        {{"range": {{"acousticness": {{"gte": 0.7, "lte": 0.8}}}}}},
-        {{"range": {{"energy": {{"gte": 0.1", "lte": 0.3}}}}}},
-        {{"range": {{"instrumentalness": {{"gte": 0.7, "lte": 0.8}}}}}}
-      ]
-    }}
-  }}
-}}
-"""},
-    {"question": "Give me a playlist with songs from Taylor Swift", "query": """
-{{
-  "size": 30,
-  "query": {{
-    "bool": {{
-      "must": 
-        {{"match": {{"artist_name": "taylor swift"}}}}
-      
     }}
   }}
 }}
@@ -147,6 +138,21 @@ Given an input question, create a syntactically correct Elasticsearch query that
 "liveness": How likely the song is performed live, [0.0, 1.0].
 "loudness": How loud the song the prompt is describing is in decibels, [0,1].
 "valence": How happy or sad the song sounds, [0.0, 1.0].
+"dating": How likely a song is to be played on a data, [0.0,1.0].
+"violence": How violent a song is, [0.0,1.0].
+"world/life": How relevant a song is to natural life, [0.0,1.0].
+"night/time": How relevant a song is to night time, [0.0,1.0].
+"shaketheaudience": How vividly a song resonates with a live audience, [0.0,1.0].
+"family/gospel": How related a song is to religion, [0.0,1.0].
+"romantic": How romantic a song sounds, [0.0,1.0].
+"communication": How likely a song is to convey a message, [0.0,1.0].
+"obscene": How obscene a song is, [0.0,1.0].
+"movement/places": How relevant a real-world place or event is in a song, [0.0,1.0].
+"light/visualperceptions": How relevant a song is to light, [0.0,1.0].
+"family/spiritual": How relevant superstitions are to a song, [0.0,1.0].
+"sadness": How sad a song is, [0.0,1.0].
+"feelings": How relevant emotions are in a song, [0.0,1.0].
+
 
 Only query for the few relevant columns given the question. The query should be a valid JSON object.
 """
