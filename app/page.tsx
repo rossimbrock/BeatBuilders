@@ -103,6 +103,9 @@ export default function Home({ Component, pageProps }: AppProps) {
             <div className="w-2/5 flex justify-end pr-4">
               {songQueue[0] && <SongCard track={songQueue[0]} addSongToList={addSongToChosenList} switchSongs={switchTrackOut}/>}
             </div>
+            <div className="w-2/5 flex justify-end pr-4">
+              {songQueue[1] && <SongCard track={songQueue[1]} addSongToList={addSongToChosenList} switchSongs={switchTrackOut}/>}
+            </div>
           </>
         )}
       </div>
