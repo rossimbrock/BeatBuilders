@@ -53,7 +53,7 @@ const pullSongInfo = async (songTitle: string, songArtist: string) => {
         // Use Deezer API if Spotify doesn't work
         if (!previewUrl) {
             // URL of your Flask server's endpoint
-            const flaskServerUrl = 'http://localhost:8080/searchQuery';
+            const flaskServerUrl = 'http://localhost:8081/flaskProxy';
             const searchQuery = `${title} ${artist}`;
         
             try {
