@@ -128,7 +128,7 @@ const SongCard: React.FC<SongCardProps> = ({ track, addSongToList, switchSongs }
                         Song Preview Unavailable
                     </div>
                 )} 
-                <div className="visualizer">
+                <div className="absolute pb-6 px-6">
                     {previewUrl && <canvas ref={canvasRef} style={{width:'100%',height:'20%',cursor: 'pointer',borderRadius:'5px'}} onClick={handlePlayPause}/>}
                 </div>
             </div>
