@@ -90,15 +90,32 @@ export default function Home({ Component, pageProps }: AppProps) {
           Your Feelings. Your Playlist.
         </p>
       </div>
-      <div className = "flex justify-center pb-24">
-        <input type="text" value = {userQuery} onChange = {(e) => setUserQuery(e.target.value)} placeholder = "Find a song based on mood, genre, artist..." className = "w-2/3 py-6 px-4 rounded-xl text-black pr-6"/>
-        <div className = "pr-4"></div>
-        <button type="submit" onClick={() => {
-          setSongQueue([]);
-          setSongsFound(0);
-          sendSearchQueryData(userQuery, setSongQueue, setSongsFound);
-          setHasSubmitted(true);
-        }} className="bg-purple-300 px-6 py-4 rounded-xl text-black font-semibold hover:scale-105">Submit</button>
+      <div className="flex justify-center pb-24">
+        <form
+          className="flex items-center w-2/3"
+          onSubmit={(e) => {
+            e.preventDefault();
+            setSongQueue([]);
+            setSongsFound(0);
+            sendSearchQueryData(userQuery, setSongQueue, setSongsFound);
+            setHasSubmitted(true);
+          }}
+        >
+          <input
+            type="text"
+            value={userQuery}
+            onChange={(e) => setUserQuery(e.target.value)}
+            placeholder="Find a song based on mood, genre, artist..."
+            className="flex-1 py-6 px-4 rounded-xl text-black pr-6"
+          />
+          <div className="pr-4"></div>
+          <button
+            type="submit"
+            className="bg-purple-300 px-6 py-4 rounded-xl text-black font-semibold hover:scale-105"
+          >
+            Submit
+          </button>
+        </form>
       </div>
       {hasSubmitted && songQueue.length === 0 && (
       <div className="text-center py-4 flex justify-center items-center">
