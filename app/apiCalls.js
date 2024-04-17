@@ -1,10 +1,6 @@
 import pullSongInfo from "./pullSongInfo";
 import Track from "@/Track";
 
-function delay(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
 export async function sendSearchQueryData(searchData, setSongQueue, updateSongsFound) {
     fetch("http://localhost:8080/searchQuery", {
         method: "POST",
@@ -31,11 +27,8 @@ export async function sendSearchQueryData(searchData, setSongQueue, updateSongsF
                     );
                     tracks.push(track);
                     updateSongsFound(tracks.length);
-                    console.log(track);
                 }
             }
-            // Uncomment this if Spotify queries are being made too quickly
-            // await delay(1);
         }
         setSongQueue(tracks);
     })

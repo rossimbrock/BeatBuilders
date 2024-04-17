@@ -10,7 +10,6 @@ RUN pip install -r requirements.txt
 
 # Copy the current directory content of flask_server and the llama directory
 COPY ./proxy_server/ .
-COPY ./LLama/ ./LLama/
 
 EXPOSE 8081
 
