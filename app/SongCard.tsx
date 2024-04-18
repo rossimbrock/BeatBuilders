@@ -32,8 +32,10 @@ const SongCard: React.FC<SongCardProps> = ({ track, addSongToList, switchSongs }
 
     }, [track.title, track.artist]);
 
-
+    let visualizerConnected = false;
     const handleVisualizer = () =>{
+        if(visualizerConnected)return;
+        visualizerConnected=true;
         const audioContext = new AudioContext();
         const audioElement = audioPlayerRef.current!;
         
@@ -63,16 +65,17 @@ const SongCard: React.FC<SongCardProps> = ({ track, addSongToList, switchSongs }
             let barHeight;
             let x = 0;
             canvasCtx.beginPath();
+            
             for (let i = 0; i < bufferLength; i++) {
                 barHeight = dataArray[i] / 2;
-
-                canvasCtx.fillStyle = `rgba(50,50,${barHeight + 50},0.7)`;
-                canvasCtx.roundRect(x, HEIGHT - barHeight / 2, barWidth, barHeight,6);
-                
+                canvasCtx.strokeStyle = `rgba(200,200,200,0.8)`;
+                canvasCtx.fillStyle = `rgba(20,20,20,0.1)`;
+                canvasCtx.roundRect(x, HEIGHT-(barHeight/2), barWidth, barHeight,6);
+                if(barHeight>0)
+                    canvasCtx.stroke();
+                canvasCtx.fill();
                 x += barWidth + 1;
-                
             }
-            canvasCtx.fill();
 
             animationIdRef.current = requestAnimationFrame(draw);
         };
@@ -123,7 +126,7 @@ const SongCard: React.FC<SongCardProps> = ({ track, addSongToList, switchSongs }
                         Song Preview Unavailable
                     </div>
                 )} 
-                <div className="absolute pb-6 px-6">
+                <div className="absolute -bottom-px">
                     {previewUrl && <canvas ref={canvasRef} style={{width:'100%',height:'20%',cursor: 'pointer',borderRadius:'5px'}} onClick={handlePlayPause}/>}
                 </div>
             </div>
