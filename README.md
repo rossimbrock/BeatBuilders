@@ -7,6 +7,7 @@
 - Install and launch Docker Desktop
     - *(or Install the latest version of Docker and Docker Compose*)
 - Run on a Unix based system
+- Create Spotify Developer credentials and fill in info in pullSongInfo and .env file
 
 ## How to Run application:
 - Navigate to the Beatbuilders directory ```cd BeatBuilders```
