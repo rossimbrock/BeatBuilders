@@ -11,8 +11,8 @@ const getSpotifyAccessToken = async () => {
 
     const params = new URLSearchParams();
     params.append('grant_type', 'client_credentials');
-    params.append('client_id', '0392115c84454df6b0aa1115841830af');
-    params.append('client_secret', '05b53f6b81c440a795483a8253b52ea0');
+    params.append('client_id', '');
+    params.append('client_secret', '');
 
     try {
         const response = await axios.post('https://accounts.spotify.com/api/token', params, {
